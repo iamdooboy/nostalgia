@@ -2,14 +2,15 @@
 
 import { getSupabaseAuth } from "@/lib/auth"
 import { getErrorMessage } from "@/lib/utils"
+import { redirect } from "next/navigation"
 
-export const createAccountAction = async (formData: FormData) => {
+export const signup = async (formData: FormData) => {
   try {
     const name = formData.get("name") as string
     const password = formData.get("password") as string
 
     const { error } = await getSupabaseAuth().signUp({
-      email: name,
+      email: `${name}@supabase`,
       password
     })
 
@@ -17,7 +18,7 @@ export const createAccountAction = async (formData: FormData) => {
 
     const { data, error: loginError } =
       await getSupabaseAuth().signInWithPassword({
-        email: name,
+        email: `${name}@supabase`,
         password
       })
 
@@ -30,14 +31,14 @@ export const createAccountAction = async (formData: FormData) => {
   }
 }
 
-export const loginAction = async (formData: FormData) => {
+export const login = async (formData: FormData) => {
   try {
     const name = formData.get("name") as string
     const password = formData.get("password") as string
 
     const { data, error: loginError } =
       await getSupabaseAuth().signInWithPassword({
-        email: name,
+        email: `${name}@supabase`,
         password
       })
 
@@ -50,12 +51,13 @@ export const loginAction = async (formData: FormData) => {
   }
 }
 
-export const signOutAction = async () => {
+export const logout = async () => {
   try {
     const { error } = await getSupabaseAuth().signOut()
     if (error) throw error
-    return { errorMessage: null }
   } catch (error) {
     return { errorMessage: getErrorMessage(error) }
+  } finally {
+    redirect("/login")
   }
 }

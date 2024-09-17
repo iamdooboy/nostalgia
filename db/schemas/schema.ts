@@ -1,12 +1,12 @@
+import { sql } from "drizzle-orm"
 import {
+  integer,
   pgTable,
+  real,
   serial,
   text,
-  integer,
-  timestamp,
-  real
+  timestamp
 } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
 
 // user table
 export const users = pgTable("users", {

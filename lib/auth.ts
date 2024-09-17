@@ -1,5 +1,5 @@
-import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export const getUser = async () => {
@@ -14,8 +14,8 @@ export const getSupabaseAuth = () => {
   const cookieStore = cookies()
 
   const supabaseClient = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
