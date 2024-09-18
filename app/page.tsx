@@ -3,34 +3,60 @@ import { Button } from "@/components/ui/button"
 import { StarRating } from "@/components/ui/star-rating"
 import db from "@/db"
 import { events } from "@/db/schemas/schema"
+import { StarIcon } from "lucide-react"
 import Link from "next/link"
 
 export default async function Home() {
   const _events = await db.select().from(events)
 
   return (
-    <main className="flex flex-col gap-6 w-full">
-      <form action={logout}>
-        <div>Logged In</div>
-        <Button type="submit">Log out</Button>
-        <p></p>
-      </form>
-      <div className="grid grid-cols-2 gap-4">
-        {_events.map((event) => (
-          <Link
-            href={event.title.toLowerCase().replace(" ", "-")}
-            key={event.id}
-            className="grid border rounded p-3 hover:bg-muted/25 gap-3"
-          >
-            <h1>{event.title} </h1>
-            <StarRating
-              value={event.rating}
-              disabled
-              iconProps={{ className: "fill-yellow-500 stroke-yellow-500" }}
-            />
-          </Link>
-        ))}
+    <main>
+      <div className="w-full max-w-2xl px-5 xl:px-0">
+        <h1 className="text-center font-display text-4xl font-bold tracking-[-0.02em] drop-shadow-sm [text-wrap:balance] md:text-7xl md:leading-[5rem]">
+          Feedback on Life
+        </h1>
+        <p className="mt-6 text-center text-muted-foreground [text-wrap:balance] md:text-xl">
+          The creators are looking for your feedback on life events to improve
+          it for future generations.
+        </p>
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6">
+          {_events.map((event) => (
+            <Link
+              href={event.title.toLowerCase().replace(" ", "-")}
+              key={event.id}
+              className="grid border rounded hover:bg-muted/25 gap-3 transition-all duration-100 hover:[box-shadow:5px_5px_rgb(82_82_82)] [box-shadow:0px_0px_rgb(82_82_82)] hover:-translate-x-[3px] hover:-translate-y-[3px] items-center justify-center"
+            >
+              <img
+                className="rounded-t-sm"
+                src="https://placehold.co/200x200?text=Hello+World"
+              />
+              <p className="text-center">{event.title}</p>
+              <Stars value={event.rating} />
+            </Link>
+          ))}
+        </div>
       </div>
     </main>
+  )
+}
+
+const Stars = ({ value }: { value: number }) => {
+  return (
+    <div className="flex gap-1 justify-center mb-4">
+      {Array.from({ length: 5 }, (_, i) => {
+        const fillPercentage = Math.max(0, Math.min(100, (value - i) * 100))
+        return (
+          <div key={i} className="relative">
+            <StarIcon className="size-5 stroke-1 stroke-muted-foreground" />
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ width: `${fillPercentage}%` }}
+            >
+              <StarIcon className="size-5 stroke-0 fill-yellow-400" />
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }

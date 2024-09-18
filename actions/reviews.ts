@@ -4,8 +4,8 @@ import db from "@/db"
 import { events, reviews } from "@/db/schemas/schema"
 import { getUser } from "@/lib/auth"
 import { getErrorMessage } from "@/lib/utils"
+import { avg, count, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
-import { eq, count, avg } from "drizzle-orm"
 
 export const create = async (formData: FormData) => {
   try {
