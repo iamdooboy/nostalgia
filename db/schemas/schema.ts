@@ -1,18 +1,20 @@
 import { sql } from "drizzle-orm"
 import {
   integer,
+  pgSchema,
   pgTable,
   real,
   serial,
   text,
-  timestamp
+  timestamp,
+  uuid
 } from "drizzle-orm/pg-core"
 
-// user table
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  createdAt: timestamp("created_at").defaultNow().notNull()
+const authSchema = pgSchema("auth")
+
+export const users = authSchema.table("users", {
+  id: uuid("id").primaryKey(),
+  email: text("email").notNull()
 })
 
 // events table
@@ -36,14 +38,12 @@ export const reviews = pgTable(
   "reviews",
   {
     id: serial("id").primaryKey(),
-    eventId: integer("event_id")
-      .references(() => events.id)
-      .notNull(),
-    userId: integer("user_id")
+    eventId: integer("event_id").notNull(),
+    userId: uuid("user_id")
       .references(() => users.id)
       .notNull(),
     rating: real("rating").notNull(),
-    comment: text("comment").notNull(),
+    text: text("text").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull()
   },
@@ -54,6 +54,5 @@ export const reviews = pgTable(
   }
 )
 
-export type User = typeof users.$inferSelect
 export type Event = typeof events.$inferSelect
 export type Review = typeof reviews.$inferSelect
