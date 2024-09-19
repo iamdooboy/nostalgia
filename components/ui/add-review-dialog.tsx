@@ -29,7 +29,7 @@ const AddReviewForm = ({ setOpen, id }: Props) => {
   }
   return (
     <DialogContent>
-      <form action={createReview}>
+      <form action={createReview} className="space-y-4">
         <Label className="font-bold text-2xl">Leave a review</Label>
         <Textarea
           disabled={isPending}

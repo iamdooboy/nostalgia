@@ -24,11 +24,19 @@ export const create = async (formData: FormData) => {
       .where(eq(reviews.eventId, eventId))
 
     const totalRating =
-      Number(_reviews.avgRating) || 0 * _reviews.numberOfReviews + rating
+      (Number(_reviews.avgRating) || 0 * _reviews.numberOfReviews) + rating
 
     const totalReviews = _reviews.numberOfReviews + 1
 
     const newAvg = Number((totalRating / totalReviews).toFixed(1))
+    console.log({
+      rating,
+      avgRating: _reviews.avgRating,
+      totalRating,
+      totalReviews,
+      newAvg
+    })
+
     await db.insert(reviews).values({ text, userId: user.id, rating, eventId })
     await db
       .update(events)

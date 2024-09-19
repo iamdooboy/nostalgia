@@ -1,69 +1,33 @@
 "use client"
-import type { LucideIcon, LucideProps } from "lucide-react"
-import { StarIcon } from "lucide-react"
-import type { Dispatch, SetStateAction } from "react"
-import React from "react"
 
-import { cn } from "@/lib/utils"
+import { Star } from "lucide-react"
+import { Dispatch, SetStateAction, useState } from "react"
 
-interface StarWrapperProps {
-  value?: number
-  setValue?: Dispatch<SetStateAction<number>>
-  numStars?: number
-  icon?: LucideIcon
-  disabled?: boolean
-  wrapperProps?: React.HTMLAttributes<HTMLDivElement>
-  iconProps?: LucideProps
-  showcase?: boolean
-}
-
-function StarRating({
-  numStars = 5,
-  icon,
-  setValue,
+export const StarRating = ({
   value,
-  disabled,
-  showcase,
-  iconProps = {},
-  wrapperProps = {}
-}: StarWrapperProps) {
-  const { className: wrapperClassName, ...restWrapperProps } = wrapperProps
-  const { className: iconClassName, ...restIconProps } = iconProps
-  const IconComponent = icon
+  setValue
+}: { value: number; setValue: Dispatch<SetStateAction<number>> }) => {
+  const [hover, setHover] = useState(0)
 
   return (
-    <div
-      className={cn("flex items-center gap-1", wrapperClassName)}
-      {...restWrapperProps}
-    >
-      {Array.from({ length: numStars }, (_, i) => {
-        const isRated = i < value!
-        const styledIconProps: LucideProps = {
-          onMouseEnter: () => !showcase && !disabled && setValue!(i + 1),
-          className: cn(
-            "fill-primary stroke-primary size-6",
-            {
-              "opacity-50 pointer-events-none": disabled,
-              "transition-transform duration-300 hover:scale-110":
-                !disabled && !showcase,
-              "!fill-muted !stroke-muted": !isRated
-            },
-            iconClassName
-          ),
-          ...restIconProps
-        }
+    <div className="flex">
+      {[...Array(5)].map((_, index) => {
+        const starValue = index + 1
         return (
-          <div key={i}>
-            {IconComponent ? (
-              <IconComponent {...styledIconProps} />
-            ) : (
-              <StarIcon {...styledIconProps} />
-            )}
-          </div>
+          <Star
+            key={index}
+            className={`size-8 cursor-pointer transition-colors duration-200 stroke-1 ${
+              starValue <= (hover || value)
+                ? "text-yellow-400"
+                : "text-gray-300"
+            }`}
+            onClick={() => setValue(starValue)}
+            onMouseEnter={() => setHover(starValue)}
+            onMouseLeave={() => setHover(0)}
+            fill={starValue <= (hover || value) ? "currentColor" : "none"}
+          />
         )
       })}
     </div>
   )
 }
-
-export { StarRating }

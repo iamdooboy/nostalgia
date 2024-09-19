@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased flex min-h-screen w-full flex-col items-center justify-center py-32 bg-background`}
+        className={`${inter.variable} antialiased flex min-h-screen w-full flex-col items-center justify-center bg-background`}
       >
         {children}
       </body>
