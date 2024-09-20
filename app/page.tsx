@@ -1,10 +1,7 @@
 import { logout } from "@/actions/users"
 import { Stars } from "@/components/stars"
-import { Button } from "@/components/ui/button"
-import { StarRating } from "@/components/ui/star-rating"
 import db from "@/db"
 import { events } from "@/db/schemas/schema"
-import { StarIcon } from "lucide-react"
 import Link from "next/link"
 
 export default async function Home() {

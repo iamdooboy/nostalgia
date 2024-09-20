@@ -3,28 +3,37 @@
 import { create } from "@/actions/reviews"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Review } from "@/lib/types"
 import { useState, useTransition } from "react"
 import { Label } from "./ui/label"
 import { StarRating } from "./ui/star-rating"
 import { Textarea } from "./ui/textarea"
 
-export function AddReviewButton({ id }: { id: number }) {
+export function AddReviewButton({
+  id,
+  addReviews,
+  name
+}: { id: number; addReviews?: (action: Review) => void; name: string }) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(0)
-  const [isPending, startTransition] = useTransition()
 
   const createReview = async (formData: FormData) => {
     formData.append("rating", value.toString())
     formData.append("id", id.toString())
-    startTransition(async () => {
-      const { errorMessage } = await create(formData)
-      if (!errorMessage) {
-        setOpen(false)
-      } else {
-        console.log("Error:", errorMessage)
-      }
-    })
+    if (addReviews) {
+      addReviews({
+        text: formData.get("text") as string,
+        rating: value,
+        name: name,
+        id: id
+      })
+    }
+    const { errorMessage } = await create(formData)
+    if (errorMessage) {
+      console.log("Error:", errorMessage)
+    }
   }
+
   return (
     <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
       <DialogTrigger asChild>
@@ -34,13 +43,12 @@ export function AddReviewButton({ id }: { id: number }) {
         <form action={createReview} className="space-y-4">
           <Label className="font-bold text-2xl">Leave a review</Label>
           <Textarea
-            disabled={isPending}
             id="text"
             name="text"
             placeholder="Type your review here."
           />
           <StarRating value={value} setValue={setValue} />
-          <Button disabled={isPending} type="submit">
+          <Button type="submit" onClick={() => setOpen(false)}>
             Submit
           </Button>
         </form>
