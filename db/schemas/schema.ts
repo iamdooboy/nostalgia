@@ -7,6 +7,7 @@ import {
   serial,
   text,
   timestamp,
+  uniqueIndex,
   uuid
 } from "drizzle-orm/pg-core"
 
@@ -40,7 +41,7 @@ export const reviews = pgTable(
     id: serial("id").primaryKey(),
     eventId: integer("event_id").notNull(),
     userId: uuid("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     rating: real("rating").notNull(),
     text: text("text").notNull(),
@@ -54,5 +55,32 @@ export const reviews = pgTable(
   }
 )
 
+export const favorites = pgTable("favorites", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  reviewId: integer("review_id").notNull()
+})
+
+export const favoriteCounts = pgTable(
+  "favorite_count",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    reviewId: integer("review_id").notNull(),
+    count: integer("count").notNull().default(0)
+  },
+  (table) => ({
+    eventIdUniqueIndex: uniqueIndex("eventIdUniqueIndex").on(table.reviewId)
+  })
+)
+
 export type Event = typeof events.$inferSelect
 export type Review = typeof reviews.$inferSelect
+export type User = typeof users.$inferSelect
+export type Favorite = typeof favorites.$inferSelect
+export type FavoriteCount = typeof favoriteCounts.$inferSelect

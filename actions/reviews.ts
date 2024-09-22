@@ -1,10 +1,10 @@
 "use server"
 
 import db from "@/db"
-import { events, reviews } from "@/db/schemas/schema"
+import { events, reviews, favorites, favoriteCounts } from "@/db/schemas/schema"
 import { getUser } from "@/lib/auth"
 import { getErrorMessage } from "@/lib/utils"
-import { avg, count, eq } from "drizzle-orm"
+import { and, avg, count, eq, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 export const create = async (formData: FormData) => {
@@ -43,4 +43,45 @@ export const create = async (formData: FormData) => {
   } catch (error) {
     return { errorMessage: getErrorMessage(error) }
   }
+}
+
+export async function toggle(reviewId: number, pathToRevalidate: string) {
+  const user = await getUser()
+
+  const favorite = await db.query.favorites.findFirst({
+    where: and(eq(favorites.userId, user.id), eq(favorites.reviewId, reviewId))
+  })
+
+  if (favorite) {
+    await db
+      .delete(favorites)
+      .where(
+        and(eq(favorites.userId, user.id), eq(favorites.reviewId, reviewId))
+      )
+    await db
+      .update(favoriteCounts)
+      .set({
+        count: sql`${favoriteCounts.count} - 1`
+      })
+      .where(eq(favoriteCounts.reviewId, reviewId))
+  } else {
+    await db.insert(favorites).values({
+      userId: user.id,
+      reviewId
+    })
+    await db
+      .insert(favoriteCounts)
+      .values({
+        reviewId,
+        count: 1
+      })
+      .onConflictDoUpdate({
+        set: {
+          count: sql`${favoriteCounts.count} + 1`
+        },
+        target: favoriteCounts.reviewId
+      })
+  }
+
+  revalidatePath(pathToRevalidate)
 }

@@ -1,6 +1,6 @@
 {
-  "id": "3854d8a4-2eb6-421c-b162-74d9979bf9cd",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "7269ddcb-b335-4698-ad05-7ec90f5caa71",
+  "prevId": "f45f85d9-e34a-4c08-a91f-94814eae0442",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -39,18 +39,69 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.favorite_count": {
+      "name": "favorite_count",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "review_id": {
+          "name": "review_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "eventIdUniqueIndex": {
+          "name": "eventIdUniqueIndex",
+          "columns": [
+            {
+              "expression": "review_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.favorites": {
       "name": "favorites",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
         "user_id": {
           "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "event_id": {
-          "name": "event_id",
+        "review_id": {
+          "name": "review_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
