@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card"
 import { Review as ReviewProps } from "@/lib/types"
 import { Stars } from "./stars"
 import { FavoriteButton } from "./favorite-button"
+import { getTimeDifference } from "@/lib/utils"
 
 export function Review({
   review,
@@ -14,10 +15,16 @@ export function Review({
           <div className="grid gap-0.5">
             <div className="font-medium">
               {review?.name.slice(0, review?.name.indexOf("@"))}
+              <span className="text-xs text-muted-foreground">
+                {" "}
+                - {getTimeDifference(review.createdAt)}
+              </span>
             </div>
-            <time className="text-xs text-muted-foreground">
-              {review.date.toDateString()}
-            </time>
+            {review.createdAt !== review.updatedAt && (
+              <span className="text-muted-foreground text-xs italic">
+                edited
+              </span>
+            )}
           </div>
         </div>
         {children}

@@ -2,7 +2,13 @@ import { AddReviewButton } from "@/components/add-review-form"
 import { ReviewSection } from "@/components/reviews-section"
 import { Stars } from "@/components/stars"
 import db from "@/db"
-import { events, reviews, users } from "@/db/schemas/schema"
+import {
+  events,
+  favoriteCounts,
+  favorites,
+  reviews,
+  users
+} from "@/db/schemas/schema"
 import { getUser } from "@/lib/auth"
 import { eq } from "drizzle-orm"
 import { Suspense } from "react"
@@ -23,11 +29,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
       rating: reviews.rating,
       name: users.email,
       id: reviews.id,
-      date: reviews.createdAt
+      createdAt: reviews.createdAt,
+      updatedAt: reviews.updatedAt,
+      favoriteCounts: favoriteCounts.count
     })
     .from(reviews)
     .where(eq(reviews.eventId, event?.id))
     .innerJoin(users, eq(reviews.userId, users.id))
+    .innerJoin(favoriteCounts, eq(reviews.id, favoriteCounts.reviewId))
 
   const currentUser = await getUser()
 

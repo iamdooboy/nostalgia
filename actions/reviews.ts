@@ -6,10 +6,15 @@ import { getUser } from "@/lib/auth"
 import { getErrorMessage } from "@/lib/utils"
 import { and, avg, count, eq, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 export const create = async (formData: FormData) => {
   try {
     const user = await getUser()
+
+    if (!user) {
+      redirect("/login")
+    }
 
     const text = formData.get("text") as string
     const rating = parseInt(formData.get("rating") as string)
@@ -48,6 +53,10 @@ export const create = async (formData: FormData) => {
 export async function toggle(reviewId: number, pathToRevalidate: string) {
   const user = await getUser()
 
+  if (!user) {
+    redirect("/login")
+  }
+
   const favorite = await db.query.favorites.findFirst({
     where: and(eq(favorites.userId, user.id), eq(favorites.reviewId, reviewId))
   })
@@ -84,4 +93,28 @@ export async function toggle(reviewId: number, pathToRevalidate: string) {
   }
 
   revalidatePath(pathToRevalidate)
+}
+
+export async function edit(formData: FormData) {
+  try {
+    const user = await getUser()
+    if (!user) {
+      redirect("/login")
+    }
+
+    const text = formData.get("text") as string
+    const rating = parseInt(formData.get("rating") as string)
+    const reviewId = parseInt(formData.get("id") as string)
+
+    await db
+      .update(reviews)
+      .set({ text, rating, updatedAt: new Date() })
+      .where(and(eq(reviews.id, reviewId), eq(reviews.userId, user.id)))
+
+    revalidatePath("/")
+
+    return { errorMessage: null }
+  } catch (error) {
+    return { errorMessage: getErrorMessage(error) }
+  }
 }

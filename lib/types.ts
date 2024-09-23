@@ -3,5 +3,6 @@ export type Review = {
   rating: number
   name: string
   id: number
-  date: Date
+  createdAt: Date
+  updatedAt?: Date
 }

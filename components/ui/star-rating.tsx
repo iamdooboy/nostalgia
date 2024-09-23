@@ -6,8 +6,13 @@ import { Dispatch, SetStateAction, useState } from "react"
 
 export const StarRating = ({
   rating,
-  setRating
-}: { rating: number; setRating: Dispatch<SetStateAction<number>> }) => {
+  setRating,
+  defaultValue
+}: {
+  rating: number
+  setRating: Dispatch<SetStateAction<number>>
+  defaultValue: number | undefined
+}) => {
   const [hover, setHover] = useState(0)
 
   return (
@@ -21,7 +26,7 @@ export const StarRating = ({
               "size-8 cursor-pointer transition-colors duration-200 stroke-1 text-gray-300",
               {
                 "fill-yellow-400 text-yellow-400":
-                  starValue <= (hover || rating)
+                  starValue <= (hover || rating || (defaultValue ?? 0))
               }
             )}
             onClick={() => setRating(starValue)}
