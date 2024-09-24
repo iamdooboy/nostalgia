@@ -36,7 +36,9 @@ export function getTimeDifference(date: Date): string {
     0
   ).getDate()
 
-  if (differenceInMinutes < 60) {
+  if (differenceInMinutes <= 1) {
+    return "just now"
+  } else if (differenceInMinutes < 60) {
     return `${differenceInMinutes}m`
   } else if (differenceInHours < 24) {
     return `${differenceInHours}h`

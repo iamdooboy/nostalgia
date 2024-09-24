@@ -5,9 +5,16 @@ CREATE TABLE IF NOT EXISTS "events" (
 	"rating" real DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "favorite_count" (
+	"id" text PRIMARY KEY NOT NULL,
+	"review_id" integer NOT NULL,
+	"count" integer DEFAULT 0 NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "favorites" (
+	"id" text PRIMARY KEY NOT NULL,
 	"user_id" uuid NOT NULL,
-	"event_id" integer NOT NULL
+	"review_id" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "reviews" (
@@ -17,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "reviews" (
 	"rating" real NOT NULL,
 	"text" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"edit" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."users" (
@@ -36,3 +43,5 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "eventIdUniqueIndex" ON "favorite_count" USING btree ("review_id");

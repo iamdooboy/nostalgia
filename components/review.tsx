@@ -16,11 +16,10 @@ export function Review({
             <div className="font-medium">
               {review?.name.slice(0, review?.name.indexOf("@"))}
               <span className="text-xs text-muted-foreground">
-                {" "}
-                - {getTimeDifference(review.createdAt)}
+                &nbsp; {getTimeDifference(review.createdAt)}
               </span>
             </div>
-            {review.createdAt !== review.updatedAt && (
+            {review.edit && (
               <span className="text-muted-foreground text-xs italic">
                 edited
               </span>

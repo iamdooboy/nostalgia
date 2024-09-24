@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm"
 import {
+  boolean,
   integer,
   pgSchema,
   pgTable,
@@ -46,7 +47,7 @@ export const reviews = pgTable(
     rating: real("rating").notNull(),
     text: text("text").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull()
+    edit: boolean("edit").default(false).notNull()
   },
   (table) => {
     return {

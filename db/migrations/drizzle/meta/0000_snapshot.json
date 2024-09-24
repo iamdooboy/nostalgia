@@ -1,5 +1,5 @@
 {
-  "id": "3854d8a4-2eb6-421c-b162-74d9979bf9cd",
+  "id": "cd830ca4-55a2-4fc6-8f4f-e1647949a438",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -39,18 +39,69 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.favorite_count": {
+      "name": "favorite_count",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "review_id": {
+          "name": "review_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "count": {
+          "name": "count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {
+        "eventIdUniqueIndex": {
+          "name": "eventIdUniqueIndex",
+          "columns": [
+            {
+              "expression": "review_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.favorites": {
       "name": "favorites",
       "schema": "",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
         "user_id": {
           "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "event_id": {
-          "name": "event_id",
+        "review_id": {
+          "name": "review_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -117,12 +168,12 @@
           "notNull": true,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
+        "edit": {
+          "name": "edit",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": false
         }
       },
       "indexes": {},

@@ -76,7 +76,7 @@ import { Review as ReviewProps } from "@/lib/types"
 import { Ellipsis } from "lucide-react"
 import React, { ReactElement } from "react"
 import { useOptimistic, useState } from "react"
-import { AddReviewButton } from "./add-review-form"
+import { AddReviewButton } from "./add-review-button"
 import { Review } from "./review"
 import { Stars } from "./stars"
 import { Button } from "./ui/button"
@@ -94,40 +94,65 @@ import { Textarea } from "./ui/textarea"
 import { StarRating } from "./ui/star-rating"
 import { create, edit } from "@/actions/reviews"
 import { Icons } from "./ui/icons"
+import { AddReviewDialog } from "./add-review-dialog"
+import { User } from "@supabase/supabase-js"
 
 type Reviews = ReviewProps[]
 
 type ReviewSectionProps = {
   reviews: Reviews
   eventId: number
-  user: User
+  user: User | null
 }
 
-type User = {
-  hasPosted: boolean
-  name: string
-  isAuthenticated: boolean
-}
 export const ReviewSection = ({
   eventId,
   reviews,
   user
 }: ReviewSectionProps) => {
+  const reviewsData = {
+    hasPosted:
+      reviews.filter((review) => review.name == user?.email).length > 0,
+    reviews
+  }
+
   const [optimisticReviews, addOptimisticReviews] = useOptimistic(
-    reviews,
+    reviewsData,
     (
       state,
-      { action, newReview }: { action: string; newReview: ReviewProps }
+      {
+        action,
+        newReviewData
+      }: {
+        action?: string
+        newReviewData: {
+          hasPosted: boolean
+          reviews: ReviewProps
+        }
+      }
     ) => {
       switch (action) {
         case "delete":
-          return state.filter(({ id }) => id !== newReview.id)
+          return {
+            hasPosted: false,
+            reviews: state.reviews.filter(
+              ({ id }) => id !== newReviewData.reviews.id
+            )
+          }
         case "update":
-          return state.map((review) =>
-            review.id === newReview.id ? newReview : review
-          )
+          return {
+            hasPosted: true,
+            reviews: state.reviews.map((review) =>
+              review.id === newReviewData.reviews.id
+                ? newReviewData.reviews
+                : review
+            )
+          }
         default:
-          return [...state, newReview]
+          return {
+            hasPosted: true,
+            reviews: [...state.reviews, newReviewData.reviews]
+          }
       }
     }
   )
@@ -140,68 +165,49 @@ export const ReviewSection = ({
       rating: 0,
       name: "",
       id: 0,
-      createdAt: new Date()
+      createdAt: new Date(),
+      edit: false
     }
   )
 
-  const canEdit = user.isAuthenticated && user.hasPosted
+  const canEdit = !!user && optimisticReviews.hasPosted
 
   const handleEdit = (review: ReviewProps) => {
     setCurrentSelectedReview(review)
     setOpen(true)
   }
 
-  const reset = () => {
-    setCurrentSelectedReview({
-      text: "",
-      rating: 0,
-      name: "",
-      id: 0,
-      createdAt: new Date()
-    })
-    setRating(0)
-  }
-
   const handleDelete = (reviewId: number) => {
-    // Logic for handling review deletion
     console.log(`Delete review with ID: ${reviewId}`)
-    // Optimistically remove the review from the state
-    // addOptimisticReviews((prevReviews) =>
-    //   prevReviews.filter((r) => r.id !== reviewId)
-    // )
   }
 
   const handleSubmit = async (formData: FormData) => {
     formData.append("rating", rating.toString())
+    formData.append(
+      "id",
+      canEdit ? currentSelectedReview.id.toString() : eventId.toString()
+    )
+
+    const newReview = {
+      text: formData.get("text") as string,
+      rating,
+      name: canEdit ? currentSelectedReview.name : (user?.email as string),
+      id: canEdit ? currentSelectedReview.id : Math.random(),
+      createdAt: canEdit ? currentSelectedReview.createdAt : new Date(),
+      edit: canEdit ? true : false
+    }
+
+    addOptimisticReviews({
+      action: canEdit ? "update" : "create",
+      newReviewData: { hasPosted: true, reviews: newReview }
+    })
+
     if (!canEdit) {
-      formData.append("id", eventId.toString())
-      addOptimisticReviews({
-        action: "create",
-        newReview: {
-          text: formData.get("text") as string,
-          rating,
-          name: user.name,
-          id: Math.random(),
-          createdAt: new Date()
-        }
-      })
       const { errorMessage } = await create(formData)
       if (errorMessage) {
         console.log("Error:", errorMessage)
       }
     } else {
-      formData.append("id", currentSelectedReview.id.toString())
-      addOptimisticReviews({
-        action: "update",
-        newReview: {
-          text: formData.get("text") as string,
-          rating,
-          name: currentSelectedReview.name,
-          id: currentSelectedReview.id,
-          createdAt: currentSelectedReview.createdAt,
-          updatedAt: new Date()
-        }
-      })
       const { errorMessage } = await edit(formData)
       if (errorMessage) {
         console.log("Error:", errorMessage)
@@ -210,74 +216,54 @@ export const ReviewSection = ({
   }
 
   return (
-    <div className="space-y-3">
-      <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
-        <div className="flex justify-between">
-          <SortButtons />
-          {!canEdit && (
-            <DialogTrigger asChild>
-              <Button onClick={() => setOpen(true)}>Leave a review</Button>
-            </DialogTrigger>
-          )}
-        </div>
-        {optimisticReviews?.map((review) => (
-          <Review key={review.id} review={review}>
-            {canEdit && (
-              <DropdownMenu
-                onOpenChange={(open) => {
-                  if (!open) {
-                    setRating(currentSelectedReview?.rating)
-                  }
-                }}
-              >
-                {review.createdAt !== review.updatedAt && (
-                  <span className="text-muted-foreground text-xs">edited</span>
-                )}
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-8 h-8 rounded-full"
-                  >
-                    <Ellipsis className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DialogTrigger asChild>
-                    <DropdownMenuItem onClick={() => handleEdit(review)}>
-                      <Icons.FilePenIcon className="size-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                  </DialogTrigger>
-                  <DropdownMenuItem onClick={() => handleDelete(review.id)}>
-                    <Icons.Trash2Icon className="size-4 mr-2" />
-                    Delete
+    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+      <div className="flex justify-between">
+        <SortButtons />
+        {!optimisticReviews.hasPosted && <AddReviewButton setOpen={setOpen} />}
+      </div>
+      {optimisticReviews.reviews?.map((review) => (
+        <Review key={review.id} review={review}>
+          {canEdit && (
+            <DropdownMenu
+              onOpenChange={(open) => {
+                if (!open) {
+                  setRating(currentSelectedReview?.rating)
+                }
+              }}
+            >
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-8 h-8 rounded-full"
+                >
+                  <Ellipsis className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DialogTrigger asChild>
+                  <DropdownMenuItem onClick={() => handleEdit(review)}>
+                    <Icons.FilePenIcon className="size-4 mr-2" />
+                    Edit
                   </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </Review>
-        ))}
-        <DialogContent>
-          <form action={handleSubmit} className="space-y-4">
-            <Label className="font-bold text-2xl">Leave a review</Label>
-            <Textarea
-              id="text"
-              name="text"
-              placeholder="Type your review here."
-              defaultValue={currentSelectedReview?.text}
-            />
-            <StarRating
-              defaultValue={currentSelectedReview?.rating}
-              rating={rating}
-              setRating={setRating}
-            />
-            <Button type="submit" onClick={() => setOpen(false)}>
-              Submit
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+                </DialogTrigger>
+                <DropdownMenuItem onClick={() => handleDelete(review.id)}>
+                  <Icons.Trash2Icon className="size-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </Review>
+      ))}
+      <AddReviewDialog
+        handleSubmit={handleSubmit}
+        defaultText={currentSelectedReview?.text}
+        defaultRating={currentSelectedReview?.rating}
+        rating={rating}
+        setRating={setRating}
+        setOpen={setOpen}
+      />
+    </Dialog>
   )
 }

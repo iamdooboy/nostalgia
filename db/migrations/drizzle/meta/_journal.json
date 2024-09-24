@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1726854615923,
-      "tag": "0000_overconfident_liz_osborn",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1726855715672,
-      "tag": "0001_lumpy_zemo",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1726856235915,
-      "tag": "0002_oval_joseph",
+      "when": 1727109863074,
+      "tag": "0000_third_wild_pack",
       "breakpoints": true
     }
   ]

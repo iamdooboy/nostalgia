@@ -35,7 +35,10 @@ export const create = async (formData: FormData) => {
 
     const newAvg = Number((totalRating / totalReviews).toFixed(1))
 
+    console.log("newAvg", newAvg)
     await db.insert(reviews).values({ text, userId: user.id, rating, eventId })
+
+    console.log("inserted")
 
     await db
       .update(events)
@@ -108,7 +111,7 @@ export async function edit(formData: FormData) {
 
     await db
       .update(reviews)
-      .set({ text, rating, updatedAt: new Date() })
+      .set({ text, rating, edit: true })
       .where(and(eq(reviews.id, reviewId), eq(reviews.userId, user.id)))
 
     revalidatePath("/")

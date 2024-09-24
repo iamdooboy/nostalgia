@@ -4,5 +4,5 @@ export type Review = {
   name: string
   id: number
   createdAt: Date
-  updatedAt?: Date
+  edit: boolean
 }
