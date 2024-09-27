@@ -83,7 +83,9 @@ export const favorites = pgTable("favorites", {
   userId: uuid("user_id")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
-  reviewId: integer("review_id").notNull()
+  reviewId: integer("review_id")
+    .references(() => reviews.id, { onDelete: "cascade" })
+    .notNull()
 })
 
 export const favoriteCounts = pgTable(
@@ -101,7 +103,6 @@ export const favoriteCounts = pgTable(
 )
 
 //RELATIONS
-
 export const EventRelations = relations(events, ({ one, many }) => ({
   reviews: many(reviews)
 }))

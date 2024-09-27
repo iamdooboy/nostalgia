@@ -1,10 +1,8 @@
 import { toggle } from "@/actions/reviews"
 import { ReviewContext } from "@/context/review-context"
-import { favoriteCounts } from "@/db/schemas/schema"
 import { Review } from "@/lib/types"
 import { User } from "@supabase/supabase-js"
 import React, { useContext } from "react"
-import { createContext } from "react"
 import { Button } from "./ui/button"
 
 type IconProps = React.HTMLAttributes<SVGElement>
@@ -25,8 +23,6 @@ export const FavoriteButton = ({
   const favoritedByCurrentUser = review.favorites.some(
     (favorite) => favorite.userId === user?.id
   )
-
-  const fav = review.favoriteCounts !== null ? review.favoriteCounts : 0
 
   const handleSubmit = async () => {
     const userId = user?.id

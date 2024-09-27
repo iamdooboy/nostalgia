@@ -1,4 +1,4 @@
-import React, { Suspense } from "react"
+import { Suspense } from "react"
 import { Stars } from "./stars"
 
 import { getReviews } from "@/utils"

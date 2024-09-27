@@ -1,10 +1,10 @@
 "use client"
 
-import { create, edit } from "@/actions/reviews"
+import { create, edit, remove } from "@/actions/reviews"
 import { Dialog } from "@/components/ui/dialog"
 import { DropdownMenu } from "@/components/ui/dropdown-menu"
-import { ReviewProvider, useReview } from "@/context/review-context"
-import { Review as ReviewProps, ReviewsData } from "@/lib/types"
+import { useReview } from "@/context/review-context"
+import { Review as ReviewProps } from "@/lib/types"
 import { User } from "@supabase/supabase-js"
 import { useState } from "react"
 import { ActionMenuDialog } from "./action-menu-dialog"
@@ -49,10 +49,27 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
     setOpen(true)
   }
 
-  const handleDelete = (reviewId: number) => {
-    console.log(`Delete review with ID: ${reviewId}`)
+  //DELETE REVIEW
+  const handleDelete = async (reviewId: number, rating: number) => {
+    addOptimisticReviews({
+      action: "delete",
+      newReviewData: {
+        hasPosted: true,
+        reviews: {
+          ...DEFAULT,
+          id: reviewId
+        }
+      }
+    })
+    const { errorMessage } = await remove(reviewId, eventId, rating)
+    setCurrentSelectedReview(DEFAULT)
+    setRating(0)
+    if (errorMessage) {
+      console.log("Error:", errorMessage)
+    }
   }
 
+  //SUBMIT/EDIT REVIEW
   const handleSubmit = async (formData: FormData) => {
     formData.append("rating", rating.toString())
     formData.append(
@@ -60,27 +77,29 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
       canEdit ? currentSelectedReview.id.toString() : eventId.toString()
     )
 
-    const test: ReviewProps = {
-      eventId: 0,
+    if (canEdit) {
+      formData.append("eventId", eventId.toString())
+      formData.append("oldRating", currentSelectedReview.rating.toString())
+    }
+
+    const newReview: ReviewProps = {
+      ...DEFAULT,
       id: canEdit ? currentSelectedReview.id : Math.random(),
       rating,
-      userId: "",
       text: formData.get("text") as string,
       createdAt: canEdit ? currentSelectedReview.createdAt : new Date(),
-      edit: false,
-      favorites: [],
+      edit: canEdit ? true : false,
       author: {
         id: "",
         email: canEdit
           ? currentSelectedReview.author.email
           : (user?.email as string)
-      },
-      favoriteCounts: null
+      }
     }
 
     addOptimisticReviews({
       action: canEdit ? "update" : "create",
-      newReviewData: { hasPosted: true, reviews: test }
+      newReviewData: { hasPosted: true, reviews: newReview }
     })
 
     if (!canEdit) {
@@ -121,7 +140,7 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
                 }}
               >
                 <ActionMenuDialog
-                  onDelete={() => handleDelete(review.id)}
+                  onDelete={() => handleDelete(review.id, review.rating)}
                   onEdit={() => handleEdit(review)}
                 />
               </DropdownMenu>

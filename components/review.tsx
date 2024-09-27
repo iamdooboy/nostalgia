@@ -1,6 +1,4 @@
-import { count } from "console"
 import { Card } from "@/components/ui/card"
-import { reviews } from "@/db/schemas/schema"
 import { Review as ReviewProps } from "@/lib/types"
 import { getTimeDifference } from "@/lib/utils"
 import { User } from "@supabase/supabase-js"

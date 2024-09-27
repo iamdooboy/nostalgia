@@ -8,6 +8,13 @@
       "when": 1727109863074,
       "tag": "0000_third_wild_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727463473524,
+      "tag": "0001_mature_frightful_four",
+      "breakpoints": true
     }
   ]
 }
