@@ -1,13 +1,20 @@
 import { getUser } from "@/lib/auth"
 import { getReviews } from "@/utils"
 import { ReviewSection } from "./reviews-section"
+import { ReviewProvider } from "@/context/review-context"
+import { ReviewsTest } from "./reviews-test"
 
 export const ReviewSectionTest = async ({ eventId }: { eventId: number }) => {
-  const reviews = await getReviews(eventId)
+  // const results = await getReviews(eventId)
+  // const reviews = await results.execute()
   const user = await getUser()
-  return (
-    <div className="space-y-3">
-      <ReviewSection reviews={reviews} eventId={eventId} user={user} />
-    </div>
-  )
+
+  const reviews = await getReviews(eventId)
+
+  const reviewsData = {
+    hasPosted:
+      reviews.filter((review) => review.author.email == user?.email).length > 0,
+    reviews
+  }
+  return <ReviewsTest reviewsData={reviewsData} eventId={eventId} user={user} />
 }

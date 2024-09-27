@@ -1,18 +1,80 @@
 import { toggle } from "@/actions/reviews"
-import React from "react"
+import React, { useContext } from "react"
 import { Button } from "./ui/button"
+import { Review } from "@/lib/types"
+import { createContext } from "react"
+import { ReviewContext } from "@/context/review-context"
+import { favoriteCounts } from "@/db/schemas/schema"
+import { User } from "@supabase/supabase-js"
 
 type IconProps = React.HTMLAttributes<SVGElement>
 
 export const FavoriteButton = ({
-  reviewId,
-  pathToRevalidate
-}: { reviewId: number; pathToRevalidate: string }) => {
+  hasPosted,
+  review,
+  pathToRevalidate,
+  user
+}: {
+  hasPosted: boolean
+  review: Review
+  pathToRevalidate: string
+  user: User | null
+}) => {
+  const { addOptimisticReviews } = useContext(ReviewContext)
+
+  const favoritedByCurrentUser = review.favorites.some(
+    (favorite) => favorite.userId === user?.id
+  )
+
+  const fav = review.favoriteCounts !== null ? review.favoriteCounts : 0
+
+  const handleSubmit = async () => {
+    const userId = user?.id
+
+    const unlike = [...review.favorites].filter(
+      (favorite) => favorite.userId !== userId
+    )
+
+    const like = [
+      ...review.favorites,
+      {
+        id: "",
+        userId: user?.id ?? "",
+        reviewId: 0
+      }
+    ]
+
+    const favCount = review.favoriteCounts?.count ?? 0
+
+    addOptimisticReviews({
+      action: "toggle",
+      newReviewData: {
+        hasPosted,
+        reviews: {
+          ...review,
+          favorites: favoritedByCurrentUser ? unlike : like,
+          favoriteCounts: {
+            count: favoritedByCurrentUser ? favCount - 1 : favCount + 1
+          }
+        }
+      }
+    })
+    const updateUserWithId = toggle.bind(null, review.id, pathToRevalidate)
+    updateUserWithId()
+  }
+
   return (
-    <form action={toggle.bind(null, reviewId, pathToRevalidate)}>
+    <form action={handleSubmit}>
       <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
-        <HeartIcon className="w-4 h-4" />
-        <span className="ml-1 text-sm text-muted-foreground">{2}</span>
+        <HeartIcon
+          className="w-4 h-4"
+          style={{
+            fill: favoritedByCurrentUser ? "currentColor" : "none"
+          }}
+        />
+        <span className="ml-1 text-sm text-muted-foreground">
+          {review.favoriteCounts?.count ?? 0}
+        </span>
       </Button>
     </form>
   )

@@ -72,7 +72,7 @@
 
 "use client"
 
-import { Review as ReviewProps } from "@/lib/types"
+import { DisplayReview, Review as ReviewProps, ReviewsData } from "@/lib/types"
 import { Ellipsis } from "lucide-react"
 import React, { ReactElement } from "react"
 import { useOptimistic, useState } from "react"
@@ -96,79 +96,40 @@ import { create, edit } from "@/actions/reviews"
 import { Icons } from "./ui/icons"
 import { AddReviewDialog } from "./add-review-dialog"
 import { User } from "@supabase/supabase-js"
-
-type Reviews = ReviewProps[]
+import { useReview } from "@/context/review-context"
+import { count } from "console"
 
 type ReviewSectionProps = {
-  reviews: Reviews
+  reviewsData: ReviewsData
   eventId: number
   user: User | null
 }
 
 export const ReviewSection = ({
+  reviewsData,
   eventId,
-  reviews,
   user
 }: ReviewSectionProps) => {
-  const reviewsData = {
-    hasPosted:
-      reviews.filter((review) => review.name == user?.email).length > 0,
-    reviews
-  }
-
-  const [optimisticReviews, addOptimisticReviews] = useOptimistic(
-    reviewsData,
-    (
-      state,
-      {
-        action,
-        newReviewData
-      }: {
-        action?: string
-        newReviewData: {
-          hasPosted: boolean
-          reviews: ReviewProps
-        }
-      }
-    ) => {
-      switch (action) {
-        case "delete":
-          return {
-            hasPosted: false,
-            reviews: state.reviews.filter(
-              ({ id }) => id !== newReviewData.reviews.id
-            )
-          }
-        case "update":
-          return {
-            hasPosted: true,
-            reviews: state.reviews.map((review) =>
-              review.id === newReviewData.reviews.id
-                ? newReviewData.reviews
-                : review
-            )
-          }
-        default:
-          return {
-            hasPosted: true,
-            reviews: [...state.reviews, newReviewData.reviews]
-          }
-      }
-    }
-  )
+  const { optimisticReviews, addOptimisticReviews } = useReview()
 
   const [open, setOpen] = useState(false)
   const [rating, setRating] = useState(0)
-  const [currentSelectedReview, setCurrentSelectedReview] = useState<ReviewProps>(
-    {
-      text: "",
-      rating: 0,
-      name: "",
+  const [currentSelectedReview, setCurrentSelectedReview] =
+    useState<ReviewProps>({
+      eventId: 0,
       id: 0,
+      rating: 0,
+      userId: "",
+      text: "",
       createdAt: new Date(),
-      edit: false
-    }
-  )
+      edit: false,
+      favorites: [],
+      author: {
+        id: "",
+        email: ""
+      },
+      favoriteCounts: null
+    })
 
   const canEdit = !!user && optimisticReviews.hasPosted
 
@@ -188,18 +149,38 @@ export const ReviewSection = ({
       canEdit ? currentSelectedReview.id.toString() : eventId.toString()
     )
 
-    const newReview = {
-      text: formData.get("text") as string,
-      rating,
-      name: canEdit ? currentSelectedReview.name : (user?.email as string),
+    // const newReview = {
+    //   text: formData.get("text") as string,
+    //   rating,
+    //   name: canEdit ? currentSelectedReview.author.email : (user?.email as string),
+    //   id: canEdit ? currentSelectedReview.id : Math.random(),
+    //   createdAt: canEdit ? currentSelectedReview.createdAt : new Date(),
+    //   edit: canEdit ? true : false,
+    //   favoriteCounts: currentSelectedReview.favoriteCounts,
+    //   favoritedByCurrentUser: currentSelectedReview.favoritedByCurrentUser
+    // }
+
+    const test: ReviewProps = {
+      eventId: 0,
       id: canEdit ? currentSelectedReview.id : Math.random(),
+      rating,
+      userId: "",
+      text: formData.get("text") as string,
       createdAt: canEdit ? currentSelectedReview.createdAt : new Date(),
-      edit: canEdit ? true : false
+      edit: false,
+      favorites: [],
+      author: {
+        id: "",
+        email: canEdit
+          ? currentSelectedReview.author.email
+          : (user?.email as string)
+      },
+      favoriteCounts: null
     }
 
     addOptimisticReviews({
       action: canEdit ? "update" : "create",
-      newReviewData: { hasPosted: true, reviews: newReview }
+      newReviewData: { hasPosted: true, reviews: test }
     })
 
     if (!canEdit) {
@@ -222,7 +203,12 @@ export const ReviewSection = ({
         {!optimisticReviews.hasPosted && <AddReviewButton setOpen={setOpen} />}
       </div>
       {optimisticReviews.reviews?.map((review) => (
-        <Review key={review.id} review={review}>
+        <Review
+          hasPosted={reviewsData.hasPosted}
+          key={review.id}
+          review={review}
+          user={user}
+        >
           {canEdit && (
             <DropdownMenu
               onOpenChange={(open) => {

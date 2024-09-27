@@ -1,4 +1,5 @@
-import { sql } from "drizzle-orm"
+import { relations, sql } from "drizzle-orm"
+import { primaryKey } from "drizzle-orm/pg-core"
 import {
   boolean,
   integer,
@@ -56,6 +57,25 @@ export const reviews = pgTable(
   }
 )
 
+export const eventReviews = pgTable(
+  "event_reviews",
+  {
+    reviewId: serial("review_id")
+      .references(() => reviews.id)
+      .notNull(),
+    eventId: serial("event_id")
+      .references(() => events.id)
+      .notNull()
+  },
+  (table) => {
+    return {
+      eventIdUniqueIndex: primaryKey({
+        columns: [table.eventId, table.reviewId]
+      })
+    }
+  }
+)
+
 export const favorites = pgTable("favorites", {
   id: text("id")
     .primaryKey()
@@ -79,6 +99,39 @@ export const favoriteCounts = pgTable(
     eventIdUniqueIndex: uniqueIndex("eventIdUniqueIndex").on(table.reviewId)
   })
 )
+
+//RELATIONS
+
+export const EventRelations = relations(events, ({ one, many }) => ({
+  reviews: many(reviews)
+}))
+
+export const ReviewRelations = relations(reviews, ({ one, many }) => ({
+  author: one(users, {
+    fields: [reviews.userId],
+    references: [users.id]
+  }),
+  event: one(events, {
+    fields: [reviews.eventId],
+    references: [events.id]
+  }),
+  favorites: many(favorites),
+  favoriteCounts: one(favoriteCounts)
+}))
+
+export const FavoriteRelations = relations(favorites, ({ one, many }) => ({
+  reviews: one(reviews, {
+    fields: [favorites.reviewId],
+    references: [reviews.id]
+  })
+}))
+
+export const FavoriteCountRelations = relations(favoriteCounts, ({ one }) => ({
+  reviews: one(reviews, {
+    fields: [favoriteCounts.reviewId],
+    references: [reviews.id]
+  })
+}))
 
 export type Event = typeof events.$inferSelect
 export type Review = typeof reviews.$inferSelect

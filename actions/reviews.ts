@@ -34,11 +34,8 @@ export const create = async (formData: FormData) => {
     const totalReviews = _reviews.numberOfReviews + 1
 
     const newAvg = Number((totalRating / totalReviews).toFixed(1))
-
-    console.log("newAvg", newAvg)
+  
     await db.insert(reviews).values({ text, userId: user.id, rating, eventId })
-
-    console.log("inserted")
 
     await db
       .update(events)
@@ -59,6 +56,8 @@ export async function toggle(reviewId: number, pathToRevalidate: string) {
   if (!user) {
     redirect("/login")
   }
+
+  console.log("toggle")
 
   const favorite = await db.query.favorites.findFirst({
     where: and(eq(favorites.userId, user.id), eq(favorites.reviewId, reviewId))

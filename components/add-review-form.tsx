@@ -111,8 +111,7 @@ export function AddReviewButton({
         text: formData.get("text") as string,
         rating: value,
         name: name,
-        id: id,
-        date: new Date()
+        createdAt: new Date()
       })
     }
     const { errorMessage } = await create(formData)
