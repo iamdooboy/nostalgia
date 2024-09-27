@@ -1,6 +1,6 @@
-import { DialogTrigger } from "./ui/dialog"
 import React, { Dispatch, SetStateAction } from "react"
 import { Button } from "./ui/button"
+import { DialogTrigger } from "./ui/dialog"
 
 export const AddReviewButton = ({
   setOpen

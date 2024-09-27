@@ -1,11 +1,11 @@
-import { Card } from "@/components/ui/card"
-import { Review as ReviewProps } from "@/lib/types"
-import { Stars } from "./stars"
-import { FavoriteButton } from "./favorite-button"
-import { getTimeDifference } from "@/lib/utils"
 import { count } from "console"
+import { Card } from "@/components/ui/card"
 import { reviews } from "@/db/schemas/schema"
+import { Review as ReviewProps } from "@/lib/types"
+import { getTimeDifference } from "@/lib/utils"
 import { User } from "@supabase/supabase-js"
+import { FavoriteButton } from "./favorite-button"
+import { Stars } from "./stars"
 
 export function Review({
   hasPosted,

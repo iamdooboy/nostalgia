@@ -1,7 +1,7 @@
 "use server"
 
 import db from "@/db"
-import { events, reviews, favorites, favoriteCounts } from "@/db/schemas/schema"
+import { events, favoriteCounts, favorites, reviews } from "@/db/schemas/schema"
 import { getUser } from "@/lib/auth"
 import { getErrorMessage } from "@/lib/utils"
 import { and, avg, count, eq, sql } from "drizzle-orm"
@@ -34,7 +34,7 @@ export const create = async (formData: FormData) => {
     const totalReviews = _reviews.numberOfReviews + 1
 
     const newAvg = Number((totalRating / totalReviews).toFixed(1))
-  
+
     await db.insert(reviews).values({ text, userId: user.id, rating, eventId })
 
     await db
