@@ -5,7 +5,10 @@ import db from "@/db"
 import { events } from "@/db/schemas/schema"
 import { Suspense } from "react"
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+  params,
+  searchParams
+}: { params: { slug: string }; searchParams: { sort: string } }) {
   const arr = params.slug.split("-")
   const title = arr
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -34,7 +37,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-        <ReviewSection eventId={event?.id} />
+        <ReviewSection eventId={event?.id} sort={searchParams.sort} />
       </Suspense>
     </div>
   )

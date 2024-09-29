@@ -6,6 +6,7 @@ export type Review = {
   text: string
   createdAt: Date
   edit: boolean
+  favoriteCount: number
   favorites: {
     id: string
     userId: string
@@ -15,7 +16,6 @@ export type Review = {
     id: string
     email: string
   }
-  favoriteCounts: { count: number } | null
 }
 
 export type Reviews = Review[]

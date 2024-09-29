@@ -48,7 +48,8 @@ export const reviews = pgTable(
     rating: real("rating").notNull(),
     text: text("text").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    edit: boolean("edit").default(false).notNull()
+    edit: boolean("edit").default(false).notNull(),
+    favoriteCount: integer("favorite_count").notNull().default(0)
   },
   (table) => {
     return {
@@ -88,20 +89,6 @@ export const favorites = pgTable("favorites", {
     .notNull()
 })
 
-export const favoriteCounts = pgTable(
-  "favorite_count",
-  {
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
-    reviewId: integer("review_id").notNull(),
-    count: integer("count").notNull().default(0)
-  },
-  (table) => ({
-    eventIdUniqueIndex: uniqueIndex("eventIdUniqueIndex").on(table.reviewId)
-  })
-)
-
 //RELATIONS
 export const EventRelations = relations(events, ({ one, many }) => ({
   reviews: many(reviews)
@@ -116,8 +103,7 @@ export const ReviewRelations = relations(reviews, ({ one, many }) => ({
     fields: [reviews.eventId],
     references: [events.id]
   }),
-  favorites: many(favorites),
-  favoriteCounts: one(favoriteCounts)
+  favorites: many(favorites)
 }))
 
 export const FavoriteRelations = relations(favorites, ({ one, many }) => ({
@@ -127,15 +113,7 @@ export const FavoriteRelations = relations(favorites, ({ one, many }) => ({
   })
 }))
 
-export const FavoriteCountRelations = relations(favoriteCounts, ({ one }) => ({
-  reviews: one(reviews, {
-    fields: [favoriteCounts.reviewId],
-    references: [reviews.id]
-  })
-}))
-
 export type Event = typeof events.$inferSelect
 export type Review = typeof reviews.$inferSelect
 export type User = typeof users.$inferSelect
 export type Favorite = typeof favorites.$inferSelect
-export type FavoriteCount = typeof favoriteCounts.$inferSelect

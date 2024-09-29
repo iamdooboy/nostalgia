@@ -1,6 +1,6 @@
 {
-  "id": "7771b872-5212-46d2-b630-32fd0b56952f",
-  "prevId": "cd830ca4-55a2-4fc6-8f4f-e1647949a438",
+  "id": "4217d2e9-1ff1-4782-9a3f-e277e7bd03bb",
+  "prevId": "e0e66f8a-ed65-4eca-a1f0-2b3821920fc7",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -27,8 +27,12 @@
           "name": "event_reviews_review_id_reviews_id_fk",
           "tableFrom": "event_reviews",
           "tableTo": "reviews",
-          "columnsFrom": ["review_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "review_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -36,8 +40,12 @@
           "name": "event_reviews_event_id_events_id_fk",
           "tableFrom": "event_reviews",
           "tableTo": "events",
-          "columnsFrom": ["event_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -45,7 +53,10 @@
       "compositePrimaryKeys": {
         "event_reviews_event_id_review_id_pk": {
           "name": "event_reviews_event_id_review_id_pk",
-          "columns": ["event_id", "review_id"]
+          "columns": [
+            "event_id",
+            "review_id"
+          ]
         }
       },
       "uniqueConstraints": {}
@@ -85,51 +96,6 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.favorite_count": {
-      "name": "favorite_count",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "review_id": {
-          "name": "review_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "count": {
-          "name": "count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        }
-      },
-      "indexes": {
-        "eventIdUniqueIndex": {
-          "name": "eventIdUniqueIndex",
-          "columns": [
-            {
-              "expression": "review_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "public.favorites": {
       "name": "favorites",
       "schema": "",
@@ -160,8 +126,12 @@
           "tableFrom": "favorites",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -169,8 +139,12 @@
           "name": "favorites_review_id_reviews_id_fk",
           "tableFrom": "favorites",
           "tableTo": "reviews",
-          "columnsFrom": ["review_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "review_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -225,6 +199,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "favorite_count": {
+          "name": "favorite_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {},
@@ -234,8 +215,12 @@
           "tableFrom": "reviews",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

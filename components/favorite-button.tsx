@@ -40,8 +40,6 @@ export const FavoriteButton = ({
       }
     ]
 
-    const favCount = review.favoriteCounts?.count ?? 0
-
     addOptimisticReviews({
       action: "toggle",
       newReviewData: {
@@ -49,9 +47,9 @@ export const FavoriteButton = ({
         reviews: {
           ...review,
           favorites: favoritedByCurrentUser ? unlike : like,
-          favoriteCounts: {
-            count: favoritedByCurrentUser ? favCount - 1 : favCount + 1
-          }
+          favoriteCount: favoritedByCurrentUser
+            ? review.favoriteCount - 1
+            : review.favoriteCount + 1
         }
       }
     })
@@ -69,7 +67,7 @@ export const FavoriteButton = ({
           }}
         />
         <span className="ml-1 text-sm text-muted-foreground">
-          {review.favoriteCounts?.count ?? 0}
+          {review.favoriteCount}
         </span>
       </Button>
     </form>
