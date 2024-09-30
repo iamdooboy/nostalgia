@@ -67,6 +67,20 @@ export const ReviewProvider = ({
                 : review
             )
           }
+        case "sort-top":
+          return {
+            ...state,
+            reviews: state.reviews.sort(
+              (a, b) => b.favoriteCount - a.favoriteCount
+            )
+          }
+        case "sort-recent":
+          return {
+            ...state,
+            reviews: state.reviews.sort(
+              (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+            )
+          }
         default:
           return {
             hasPosted: true,

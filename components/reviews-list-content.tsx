@@ -26,7 +26,7 @@ const DEFAULT = {
     id: "",
     email: ""
   },
-  favoriteCounts: null
+  favoriteCount: 0
 }
 
 type ReviewSectionProps = {

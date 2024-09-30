@@ -8,6 +8,7 @@ export const ReviewSection = async ({
   sort
 }: { eventId: number; sort?: string }) => {
   const user = await getUser()
+  console.log({ sort })
   const reviews = await getReviews(eventId, sort)
 
   const reviewsData = {
