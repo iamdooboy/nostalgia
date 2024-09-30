@@ -3,8 +3,26 @@
 import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { usePathname, useSearchParams } from "next/navigation"
+import { useReview } from "@/context/review-context"
+
+const DEFAULT = {
+  eventId: 0,
+  id: 0,
+  rating: 0,
+  userId: "",
+  text: "",
+  createdAt: new Date(),
+  edit: false,
+  favorites: [],
+  author: {
+    id: "",
+    email: ""
+  },
+  favoriteCount: 0
+}
 
 export const SortButtons = () => {
+  const { optimisticReviews, addOptimisticReviews } = useReview()
   const [sort, setSort] = useState("recent")
   const router = useRouter()
   const pathname = usePathname()
@@ -14,20 +32,27 @@ export const SortButtons = () => {
     setSort(searchParams.get("sort") || "recent")
   }, [])
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
+  // const createQueryString = useCallback(
+  //   (name: string, value: string) => {
+  //     const params = new URLSearchParams(searchParams.toString())
+  //     params.set(name, value)
 
-      return params.toString()
-    },
-    [searchParams]
-  )
+  //     return params.toString()
+  //   },
+  //   [searchParams]
+  // )
 
   const handleSort = async (sortType: string) => {
     if (sort === sortType) return
     setSort(sortType)
-    router.replace(pathname + "?" + createQueryString("sort", sortType))
+    addOptimisticReviews({
+      action: `sort-${sortType}`,
+      newReviewData: {
+        hasPosted: optimisticReviews.hasPosted,
+        reviews: DEFAULT
+      }
+    })
+    // router.replace(pathname + "?" + createQueryString("sort", sortType))
   }
 
   return (

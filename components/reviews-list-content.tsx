@@ -12,6 +12,7 @@ import { AddReviewButton } from "./add-review-button"
 import { AddReviewDialog } from "./add-review-dialog"
 import { Review } from "./review"
 import { SortButtons } from "./sort-buttons"
+import { LoginModal } from "./login-modal"
 
 const DEFAULT = {
   eventId: 0,
@@ -120,9 +121,9 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
       <div className="space-y-3">
         <div className="flex justify-between">
           <SortButtons />
-          {!optimisticReviews.hasPosted && (
-            <AddReviewButton setOpen={setOpen} />
-          )}
+          {!optimisticReviews.hasPosted ? (
+            <AddReviewButton setOpen={setOpen} user={user} />
+          ) : null}
         </div>
         {optimisticReviews.reviews?.map((review) => (
           <Review
@@ -147,14 +148,18 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
             )}
           </Review>
         ))}
-        <AddReviewDialog
-          handleSubmit={handleSubmit}
-          defaultText={currentSelectedReview?.text}
-          defaultRating={currentSelectedReview?.rating}
-          rating={rating}
-          setRating={setRating}
-          setOpen={setOpen}
-        />
+        {!!user ? (
+          <AddReviewDialog
+            handleSubmit={handleSubmit}
+            defaultText={currentSelectedReview?.text}
+            defaultRating={currentSelectedReview?.rating}
+            rating={rating}
+            setRating={setRating}
+            setOpen={setOpen}
+          />
+        ) : (
+          <LoginModal />
+        )}
       </div>
     </Dialog>
   )

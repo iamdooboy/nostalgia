@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   })
 
   const path = new URL(request.url).pathname
+  console.log(path)
 
   const unprotectedPaths = ["/login", "/signup"]
 
@@ -17,9 +18,10 @@ export async function middleware(request: NextRequest) {
 
   if (user && isUnprotectedPath) {
     return NextResponse.redirect(new URL("/", request.url))
-  } else if (!user && !isUnprotectedPath) {
-    return NextResponse.redirect(new URL("/login", request.url))
-  }
+  } 
+  // else if (!user && !isUnprotectedPath) {
+  //   return NextResponse.redirect(new URL("/login", request.url))
+  // }
 
   return response
 }

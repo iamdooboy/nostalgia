@@ -16,7 +16,7 @@ import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
-
+import { LoginModal } from "@/components/login-modal"
 function page() {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
