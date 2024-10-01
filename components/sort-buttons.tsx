@@ -1,9 +1,8 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { usePathname, useSearchParams } from "next/navigation"
 import { useReview } from "@/context/review-context"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 const DEFAULT = {
   eventId: 0,
@@ -24,23 +23,11 @@ const DEFAULT = {
 export const SortButtons = () => {
   const { optimisticReviews, addOptimisticReviews } = useReview()
   const [sort, setSort] = useState("recent")
-  const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
     setSort(searchParams.get("sort") || "recent")
   }, [])
-
-  // const createQueryString = useCallback(
-  //   (name: string, value: string) => {
-  //     const params = new URLSearchParams(searchParams.toString())
-  //     params.set(name, value)
-
-  //     return params.toString()
-  //   },
-  //   [searchParams]
-  // )
 
   const handleSort = async (sortType: string) => {
     if (sort === sortType) return
@@ -52,7 +39,6 @@ export const SortButtons = () => {
         reviews: DEFAULT
       }
     })
-    // router.replace(pathname + "?" + createQueryString("sort", sortType))
   }
 
   return (

@@ -27,12 +27,8 @@
           "name": "event_reviews_review_id_reviews_id_fk",
           "tableFrom": "event_reviews",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -40,12 +36,8 @@
           "name": "event_reviews_event_id_events_id_fk",
           "tableFrom": "event_reviews",
           "tableTo": "events",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -53,10 +45,7 @@
       "compositePrimaryKeys": {
         "event_reviews_event_id_review_id_pk": {
           "name": "event_reviews_event_id_review_id_pk",
-          "columns": [
-            "event_id",
-            "review_id"
-          ]
+          "columns": ["event_id", "review_id"]
         }
       },
       "uniqueConstraints": {}
@@ -171,12 +160,8 @@
           "tableFrom": "favorites",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -184,12 +169,8 @@
           "name": "favorites_review_id_reviews_id_fk",
           "tableFrom": "favorites",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -253,12 +234,8 @@
           "tableFrom": "reviews",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

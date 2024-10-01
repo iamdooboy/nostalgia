@@ -1,9 +1,12 @@
 import { toggle } from "@/actions/reviews"
 import { ReviewContext } from "@/context/review-context"
 import { Review } from "@/lib/types"
+import { DialogTrigger } from "@radix-ui/react-dialog"
 import { User } from "@supabase/supabase-js"
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
+import { LoginModal } from "./login-modal"
 import { Button } from "./ui/button"
+import { Dialog, DialogContent } from "./ui/dialog"
 import { Icons } from "./ui/icons"
 
 export const FavoriteButton = ({
@@ -18,12 +21,19 @@ export const FavoriteButton = ({
   user: User | null
 }) => {
   const { addOptimisticReviews } = useContext(ReviewContext)
+  const [open, setOpen] = useState(false)
 
   const favoritedByCurrentUser = review.favorites.some(
     (favorite) => favorite.userId === user?.id
   )
 
   const handleSubmit = async () => {
+    console.log(user)
+    if (!user) {
+      setOpen(true)
+      return
+    }
+
     const userId = user?.id
 
     const unlike = [...review.favorites].filter(
@@ -57,18 +67,23 @@ export const FavoriteButton = ({
   }
 
   return (
-    <form action={handleSubmit}>
-      <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
-        <Icons.HeartIcon
-          className="w-4 h-4"
-          style={{
-            fill: favoritedByCurrentUser ? "currentColor" : "none"
-          }}
-        />
-        <span className="ml-1 text-sm text-muted-foreground">
-          {review.favoriteCount}
-        </span>
-      </Button>
-    </form>
+    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+      <DialogTrigger asChild>
+        <form action={handleSubmit}>
+          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
+            <Icons.HeartIcon
+              className="w-4 h-4"
+              style={{
+                fill: favoritedByCurrentUser ? "currentColor" : "none"
+              }}
+            />
+            <span className="ml-1 text-sm text-muted-foreground">
+              {review.favoriteCount}
+            </span>
+          </Button>
+        </form>
+      </DialogTrigger>
+      {!user && <LoginModal description="Log in to favorite a review" />}
+    </Dialog>
   )
 }

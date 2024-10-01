@@ -19,11 +19,9 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
-  modal
+  children
 }: Readonly<{
   children: React.ReactNode
-  modal: React.ReactNode
 }>) {
   return (
     <html lang="en">
@@ -32,7 +30,6 @@ export default function RootLayout({
           (fontHeading.variable, fontBody.variable)
         } antialiased flex min-h-screen w-full flex-col items-center justify-center bg-background`}
       >
-        {modal}
         {children}
       </body>
     </html>

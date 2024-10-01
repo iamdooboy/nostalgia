@@ -1,26 +1,24 @@
 "use client"
 
-import { useParams, useRouter } from "next/navigation"
-import { Dialog, DialogClose, DialogContent, DialogOverlay } from "./ui/dialog"
+import { login } from "@/actions/users"
 import { Label } from "@radix-ui/react-label"
 import { Loader2 } from "lucide-react"
+import Link from "next/link"
+import { useParams, useRouter } from "next/navigation"
+import { useTransition } from "react"
 import { Button } from "./ui/button"
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
-  CardFooter
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
 } from "./ui/card"
+import { DialogContent } from "./ui/dialog"
 import { Input } from "./ui/input"
-import { useTransition } from "react"
-import { login } from "@/actions/users"
-import Link from "next/link"
 
-export const LoginModal = () => {
+export const LoginModal = ({ description }: { description: string }) => {
   const params = useParams()
-  console.log(params)
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const handleCreateAccountAction = async (formData: FormData) => {
@@ -36,9 +34,7 @@ export const LoginModal = () => {
       <form action={handleCreateAccountAction}>
         <CardHeader>
           <CardTitle className="text-2xl">Log In</CardTitle>
-          <CardDescription>
-            Enter a name and password below to login to your account.
-          </CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">

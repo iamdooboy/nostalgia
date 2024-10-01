@@ -1,4 +1,4 @@
-import { type CookieOptions, createServerClient } from "@supabase/ssr"
+import { createServerClient } from "@supabase/ssr"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function middleware(request: NextRequest) {
@@ -9,7 +9,6 @@ export async function middleware(request: NextRequest) {
   })
 
   const path = new URL(request.url).pathname
-  console.log(path)
 
   const unprotectedPaths = ["/login", "/signup"]
 
@@ -18,10 +17,7 @@ export async function middleware(request: NextRequest) {
 
   if (user && isUnprotectedPath) {
     return NextResponse.redirect(new URL("/", request.url))
-  } 
-  // else if (!user && !isUnprotectedPath) {
-  //   return NextResponse.redirect(new URL("/login", request.url))
-  // }
+  }
 
   return response
 }

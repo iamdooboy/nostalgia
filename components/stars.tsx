@@ -11,7 +11,7 @@ export const Stars = ({
         const fillPercentage = Math.max(0, Math.min(100, (value - i) * 100))
         return (
           <div key={i} className="relative">
-            <StarIcon className="size-5 stroke-1 stroke-muted-foreground" />
+            <StarIcon className="size-5 stroke-1 stroke-background-foreground" />
             <div
               className="absolute inset-0 overflow-hidden"
               style={{ width: `${fillPercentage}%` }}

@@ -10,9 +10,9 @@ import { useState } from "react"
 import { ActionMenuDialog } from "./action-menu-dialog"
 import { AddReviewButton } from "./add-review-button"
 import { AddReviewDialog } from "./add-review-dialog"
+import { LoginModal } from "./login-modal"
 import { Review } from "./review"
 import { SortButtons } from "./sort-buttons"
-import { LoginModal } from "./login-modal"
 
 const DEFAULT = {
   eventId: 0,
@@ -158,7 +158,7 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
             setOpen={setOpen}
           />
         ) : (
-          <LoginModal />
+          <LoginModal description="Log in to leave a review" />
         )}
       </div>
     </Dialog>

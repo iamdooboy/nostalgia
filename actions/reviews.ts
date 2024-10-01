@@ -179,16 +179,3 @@ export async function remove(
     return { errorMessage: getErrorMessage(error) }
   }
 }
-
-// export async function get(eventId: number, sort: string = "recent") {
-//   console.log(sort)
-//   return await db.query.reviews.findMany({
-//     where: eq(reviews.eventId, eventId),
-//     with: {
-//       author: true,
-//       favorites: true
-//     },
-//     orderBy:
-//       sort === "recent" ? desc(reviews.favoriteCount) : desc(reviews.createdAt)
-//   })
-// }
