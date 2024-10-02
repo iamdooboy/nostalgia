@@ -22,8 +22,8 @@ export const AddReviewDialog = ({
   setOpen
 }: Props) => {
   return (
-    <DialogContent>
-      <form action={handleSubmit} className="space-y-4">
+    <DialogContent className="w-full p-1">
+      <form action={handleSubmit} className="space-y-4 p-4">
         <Label className="font-bold text-2xl">Leave a review</Label>
         <Textarea
           id="text"
@@ -36,9 +36,15 @@ export const AddReviewDialog = ({
           rating={rating}
           setRating={setRating}
         />
-        <Button type="submit" onClick={() => setOpen(false)}>
-          Submit
-        </Button>
+        <div className='flex justify-center items-center'>
+          <button
+            className="shadow-out w-20"
+            type="submit"
+            onClick={() => setOpen(false)}
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </DialogContent>
   )

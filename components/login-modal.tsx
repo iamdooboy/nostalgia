@@ -39,7 +39,8 @@ export const LoginModal = ({ description }: { description: string }) => {
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Name</Label>
-            <Input
+            <input
+              className="shadow-input pl-1"
               name="name"
               type="text"
               placeholder="John Doe"
@@ -49,7 +50,8 @@ export const LoginModal = ({ description }: { description: string }) => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input
+            <input
+              className="shadow-input pl-1"
               name="password"
               type="password"
               placeholder="Password"
@@ -65,7 +67,11 @@ export const LoginModal = ({ description }: { description: string }) => {
           </Link>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" type="submit" disabled={isPending}>
+          <button
+            className="bg-material shadow-out w-full"
+            type="submit"
+            disabled={isPending}
+          >
             {isPending ? (
               <>
                 <Loader2 className="mr-2 size-5 animate-spin" />
@@ -74,7 +80,7 @@ export const LoginModal = ({ description }: { description: string }) => {
             ) : (
               "Login"
             )}
-          </Button>
+          </button>
         </CardFooter>
       </form>
     </DialogContent>

@@ -24,11 +24,11 @@ export const ActionMenuDialog = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onEdit}>
-          <Icons.FilePenIcon className="size-4 mr-2" />
+          <Icons.Pen className="size-5 mr-3" />
           Edit
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onDelete}>
-          <Icons.Trash2Icon className="size-4 mr-2" />
+          <Icons.Trash className="size-5 mr-3" />
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

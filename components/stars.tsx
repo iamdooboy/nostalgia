@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { StarIcon } from "lucide-react"
+import { Icons } from './ui/icons';
 
 export const Stars = ({
   value,
@@ -11,12 +12,12 @@ export const Stars = ({
         const fillPercentage = Math.max(0, Math.min(100, (value - i) * 100))
         return (
           <div key={i} className="relative">
-            <StarIcon className="size-5 stroke-1 stroke-background-foreground" />
+            <Icons.Star className="size-6 stroke-1 stroke-background-foreground" />
             <div
               className="absolute inset-0 overflow-hidden"
               style={{ width: `${fillPercentage}%` }}
             >
-              <StarIcon className="size-5 stroke-0 fill-yellow-400" />
+              <Icons.Star className="size-6 stroke-0 fill-yellow-400" />
             </div>
           </div>
         )

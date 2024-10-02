@@ -1,3 +1,67 @@
+// import type { Config } from "tailwindcss"
+
+// const config: Config = {
+//   darkMode: ["class"],
+//   content: [
+//     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+//     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+//     "./app/**/*.{js,ts,jsx,tsx,mdx}"
+//   ],
+//   theme: {
+//     extend: {
+//       colors: {
+//         background: "(var(--background))",
+//         foreground: "(var(--foreground))",
+//         card: {
+//           DEFAULT: "(var(--card))",
+//           foreground: "(var(--card-foreground))"
+//         },
+//         popover: {
+//           DEFAULT: "(var(--popover))",
+//           foreground: "(var(--popover-foreground))"
+//         },
+//         primary: {
+//           DEFAULT: "(var(--primary))",
+//           foreground: "(var(--primary-foreground))"
+//         },
+//         secondary: {
+//           DEFAULT: "(var(--secondary))",
+//           foreground: "(var(--secondary-foreground))"
+//         },
+//         muted: {
+//           DEFAULT: "(var(--muted))",
+//           foreground: "(var(--muted-foreground))"
+//         },
+//         accent: {
+//           DEFAULT: "(var(--accent))",
+//           foreground: "(var(--accent-foreground))"
+//         },
+//         destructive: {
+//           DEFAULT: "(var(--destructive))",
+//           foreground: "(var(--destructive-foreground))"
+//         },
+//         border: "(var(--border))",
+//         input: "(var(--input))",
+//         ring: "(var(--ring))",
+//         chart: {
+//           "1": "(var(--chart-1))",
+//           "2": "(var(--chart-2))",
+//           "3": "(var(--chart-3))",
+//           "4": "(var(--chart-4))",
+//           "5": "(var(--chart-5))"
+//         }
+//       },
+//       borderRadius: {
+//         lg: "var(--radius)",
+//         md: "calc(var(--radius) - 2px)",
+//         sm: "calc(var(--radius) - 4px)"
+//       }
+//     }
+//   },
+//   plugins: [require("tailwindcss-animate")]
+// }
+// export default config
+
 import type { Config } from "tailwindcss"
 
 const config: Config = {
@@ -9,52 +73,61 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))"
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))"
-        },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))"
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))"
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))"
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))"
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))"
-        },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))"
-        }
+      boxShadow: {
+        in: "var(--shadow-in)",
+        out: "var(--shadow-out)",
+        input: "var(--shadow-input)",
+        active: "var(--shadow-active)",
+        inactive: "var(--shadow-inactive)"
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)"
+      colors: {
+        background: "var(--background)",
+        anchor: {
+          DEFAULT: "var(--anchor)",
+          visited: "var(--anchor-visited)"
+        },
+        border: {
+          light: "var(--border-light)",
+          lighter: "var(--border-lighter)",
+          lightest: "var(--border-lightest)",
+          dark: "var(--border-dark)",
+          darkest: "var(--border-darkest)"
+        },
+        canvas: {
+          DEFAULT: "var(--canvas)",
+          text: "var(--canvas-text)"
+        },
+        header: {
+          background: "var(--header-background)",
+          text: "var(--header-text)",
+          inactive: {
+            background: "var(--header-not-active-background)",
+            text: "var(--header-not-active-text)"
+          }
+        },
+        material: {
+          DEFAULT: "var(--material)",
+          text: {
+            DEFAULT: "var(--material-text)",
+            invert: "var(--material-text-invert)",
+            disabled: {
+              DEFAULT: "var(--material-text-disabled)",
+              shadow: "var(--material-text-disabled-shadow)"
+            }
+          }
+        },
+        progress: "var(--progress)",
+        input: {
+          background: {
+            DEFAULT: "var(--input-background)",
+            disabled: "var(--input-background-disabled)"
+          }
+        },
+        shadow: {
+          in: "var(--shadow-in)",
+          out: "var(--shadow-out)",
+          input: "var(--shadow-input)"
+        }
       }
     }
   },

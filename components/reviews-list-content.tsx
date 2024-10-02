@@ -13,6 +13,7 @@ import { AddReviewDialog } from "./add-review-dialog"
 import { LoginModal } from "./login-modal"
 import { Review } from "./review"
 import { SortButtons } from "./sort-buttons"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const DEFAULT = {
   eventId: 0,
@@ -119,7 +120,84 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
   return (
     <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
       <div className="space-y-3">
-        <div className="flex justify-between">
+        {!optimisticReviews.hasPosted ? (
+          <AddReviewButton setOpen={setOpen} user={user} />
+        ) : null}
+        <Tabs defaultValue="recent" className="mt-2">
+          <TabsList className="grid grid-cols-2">
+            <TabsTrigger className="ml-[2px]" value="recent">
+              Recent
+            </TabsTrigger>
+            <TabsTrigger className="mr-[1px]" value="top">
+              Top
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="recent" className="p-[2px] space-y-1">
+            {optimisticReviews.reviews?.map((review) => (
+              <Review
+                hasPosted={optimisticReviews.hasPosted}
+                key={review.id}
+                review={review}
+                user={user}
+              >
+                {review.author.id === user?.id && (
+                  <DropdownMenu
+                    onOpenChange={(open) => {
+                      if (!open) {
+                        setRating(currentSelectedReview?.rating)
+                      }
+                    }}
+                  >
+                    <ActionMenuDialog
+                      onDelete={() => handleDelete(review.id, review.rating)}
+                      onEdit={() => handleEdit(review)}
+                    />
+                  </DropdownMenu>
+                )}
+              </Review>
+            ))}
+          </TabsContent>
+          <TabsContent value="top" className="p-[2px] space-y-1">
+            {[...optimisticReviews.reviews]
+              .sort((a, b) => b.favoriteCount - a.favoriteCount)
+              .map((review) => (
+                <Review
+                  hasPosted={optimisticReviews.hasPosted}
+                  key={review.id}
+                  review={review}
+                  user={user}
+                >
+                  {review.author.id === user?.id && (
+                    <DropdownMenu
+                      onOpenChange={(open) => {
+                        if (!open) {
+                          setRating(currentSelectedReview?.rating)
+                        }
+                      }}
+                    >
+                      <ActionMenuDialog
+                        onDelete={() => handleDelete(review.id, review.rating)}
+                        onEdit={() => handleEdit(review)}
+                      />
+                    </DropdownMenu>
+                  )}
+                </Review>
+              ))}
+          </TabsContent>
+        </Tabs>
+        {!!user ? (
+          <AddReviewDialog
+            handleSubmit={handleSubmit}
+            defaultText={currentSelectedReview?.text}
+            defaultRating={currentSelectedReview?.rating}
+            rating={rating}
+            setRating={setRating}
+            setOpen={setOpen}
+          />
+        ) : (
+          <LoginModal description="Log in to leave a review" />
+        )}
+        {/* <div className="flex justify-between">
           <SortButtons />
           {!optimisticReviews.hasPosted ? (
             <AddReviewButton setOpen={setOpen} user={user} />
@@ -159,7 +237,7 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
           />
         ) : (
           <LoginModal description="Log in to leave a review" />
-        )}
+        )} */}
       </div>
     </Dialog>
   )

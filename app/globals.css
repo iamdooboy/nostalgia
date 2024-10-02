@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  .dark {
+  /* .dark {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -28,8 +28,8 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-  }
-  :root {
+  } */
+  /* :root {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -55,14 +55,50 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --radius: 0.5rem;
+  } */
+
+  :root {
+    --background: #55aaaa;
+    --anchor: #000e7a;
+    --anchor-visited: #440381;
+    --border-dark: #868a8e;
+    --border-darkest: #000000;
+    --border-light: #d2d2d2;
+    --border-lighter: #e6e6e6;
+    --border-lightest: #ffffff;
+    --canvas: #000000;
+    --canvas-text: #ffffff;
+    --header-background: #000e7a;
+    --header-not-active-background: #7f787f;
+    --header-not-active-text: #c6c6c6;
+    --header-text: #fefefe;
+    --material: #c3c7cb;
+    --material-text: #000000;
+    --material-text-disabled: #868a8e;
+    --material-text-disabled-shadow: #d2d2d2;
+    --material-text-invert: #ffffff;
+    --progress: #000e7a;
+    --input-background: #ffffff;
+    --input-background-disabled: #d2d2d2;
+    --shadow-out:
+      inset .5px .5px 0px .5px #ffffff, inset 0 0 0 1px #868a8e, 1px 0px 0 0px #000000, 0px 1px 0 0px #000000, 1px 1px 0 0px #000000;
+    --shadow-in: inset 0px 0px 0px 0px, inset 1px 1px 0px 0px #868a8e, .5px .5px
+      0px .5px #ffffff;
+    --shadow-input: inset -1px -1px 0 0 #c3c7cb, inset 1px 1px 0 0 #000000, .5px
+      .5px 0 .5px #ffffff;
+    --shadow-active:
+      inset 0 1px 0 0 var(--border-lightest), -2px 1px 0 -1px var(--material), -.5px 3px 0 .5px var(--material), -2px 2px 0 0 var(--border-lightest), -2px 0 0 -1px
+      var(--border-lightest), 1px 2px 0 0 var(--border-dark), 2px 0 0 -1px var(--border-darkest), 2px 2px 0 0 var(--border-darkest);
+    --shadow-inactive:
+      inset 0 1px 0 0 var(--border-lightest),-2px 1px 0 -1px var(--material),-3px 1px 0 -1px var(--border-lightest),-2px 0 0 -1px var(--border-lightest),2px 1px 0 -1px var(--border-dark),2px 0 0 -1px var(--border-darkest),3px 1px 0 -1px var(--border-darkest);
   }
 }
 @layer base {
-  * {
+  /* * {
     @apply border-border;
-  }
+  } */
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background;
   }
 }
 
