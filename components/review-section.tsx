@@ -4,11 +4,10 @@ import { ReviewsList } from "./reviews-list"
 import { ReviewsListContent } from "./reviews-list-content"
 
 export const ReviewSection = async ({
-  eventId,
-  sort
+  eventId
 }: { eventId: number; sort?: string }) => {
   const user = await getUser()
-  const reviews = await getReviews(eventId, sort)
+  const reviews = await getReviews(eventId)
 
   const reviewsData = {
     hasPosted:

@@ -73,6 +73,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      cursor: {
+        'wait': 'url(/wait.png), default',
+      },
       boxShadow: {
         in: "var(--shadow-in)",
         out: "var(--shadow-out)",

@@ -32,7 +32,7 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ title, className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -44,7 +44,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       <div className="h-6 bg-header-background w-full text-header-text flex pl-[3px] justify-center items-center">
-        Login
+        {title}
         <div className="h-full p-[2px] flex gap-[1px] first:ml-auto">
           <button className="w-6 h-full bg-material shadow-out justify-center items-center flex">
             <img src="/help.svg" />

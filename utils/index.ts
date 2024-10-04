@@ -9,7 +9,6 @@ export const getReviews = async (eventId: number, sort: string = "recent") => {
       author: true,
       favorites: true
     },
-    orderBy:
-      sort === "recent" ? desc(reviews.createdAt) : desc(reviews.favoriteCount)
+    orderBy: desc(reviews.favoriteCount)
   })
 }

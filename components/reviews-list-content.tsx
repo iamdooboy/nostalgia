@@ -117,8 +117,14 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
     }
   }
 
+  const onOpenChange = (open: boolean) => {
+    setCurrentSelectedReview(DEFAULT)
+    setRating(0)
+    setOpen(open)
+  }
+
   return (
-    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+    <Dialog open={open} onOpenChange={(open) => onOpenChange(open)}>
       <div className="space-y-3">
         {!optimisticReviews.hasPosted ? (
           <AddReviewButton setOpen={setOpen} user={user} />
@@ -197,47 +203,6 @@ export const ReviewsListContent = ({ eventId, user }: ReviewSectionProps) => {
         ) : (
           <LoginModal description="Log in to leave a review" />
         )}
-        {/* <div className="flex justify-between">
-          <SortButtons />
-          {!optimisticReviews.hasPosted ? (
-            <AddReviewButton setOpen={setOpen} user={user} />
-          ) : null}
-        </div>
-        {optimisticReviews.reviews?.map((review) => (
-          <Review
-            hasPosted={optimisticReviews.hasPosted}
-            key={review.id}
-            review={review}
-            user={user}
-          >
-            {canEdit && (
-              <DropdownMenu
-                onOpenChange={(open) => {
-                  if (!open) {
-                    setRating(currentSelectedReview?.rating)
-                  }
-                }}
-              >
-                <ActionMenuDialog
-                  onDelete={() => handleDelete(review.id, review.rating)}
-                  onEdit={() => handleEdit(review)}
-                />
-              </DropdownMenu>
-            )}
-          </Review>
-        ))}
-        {!!user ? (
-          <AddReviewDialog
-            handleSubmit={handleSubmit}
-            defaultText={currentSelectedReview?.text}
-            defaultRating={currentSelectedReview?.rating}
-            rating={rating}
-            setRating={setRating}
-            setOpen={setOpen}
-          />
-        ) : (
-          <LoginModal description="Log in to leave a review" />
-        )} */}
       </div>
     </Dialog>
   )

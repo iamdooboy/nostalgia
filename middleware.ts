@@ -12,12 +12,12 @@ export async function middleware(request: NextRequest) {
 
   const unprotectedPaths = ["/login", "/signup"]
 
-  const user = await getUser(request, response)
-  const isUnprotectedPath = unprotectedPaths.some((up) => path.startsWith(up))
+  // const user = await getUser(request, response)
+  // const isUnprotectedPath = unprotectedPaths.some((up) => path.startsWith(up))
 
-  if (user && isUnprotectedPath) {
-    return NextResponse.redirect(new URL("/", request.url))
-  }
+  // if (user && isUnprotectedPath) {
+  //   return NextResponse.redirect(new URL("/", request.url))
+  // }
 
   return response
 }

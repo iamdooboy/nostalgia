@@ -3,10 +3,10 @@ import { Stars } from "@/components/stars"
 import db from "@/db"
 import { events } from "@/db/schemas/schema"
 import Link from "next/link"
-
+import { DATA } from "../lib/data"
 
 export default async function Home() {
-  const _events = await db.select().from(events)
+  //const _events = await db.select().from(events)
 
   return (
     <div className="w-full max-w-2xl px-5 xl:px-0">
@@ -17,35 +17,31 @@ export default async function Home() {
         The creators are looking for your feedback on life events to improve it
         for future generations.
       </p>
-      {/* <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6">
-        {_events.map((event) => (
+      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-6">
+        {DATA.map((event) => (
           <Link
-            href={event.title.toLowerCase().replace(" ", "-")}
-            key={event.id}
-            className="grid border rounded hover:bg-muted/25 gap-3 transition-all duration-100 hover:[box-shadow:5px_5px_rgb(82_82_82)] [box-shadow:0px_0px_rgb(82_82_82)] hover:-translate-x-[3px] hover:-translate-y-[3px] items-center justify-center"
+            href={event.slug}
+            key={event.slug}
+            className="grid bg-material items-center justify-center relative shadow-out"
           >
-            <img
-              className="rounded-t-sm"
-              src="https://placehold.co/200x200?text=Hello+World"
-            />
-            <p className="text-center">{event.title}</p>
-            <Stars value={event.rating} />
-          </Link>
-        ))}
-      </div> */}
-      <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6">
-        {_events.map((event) => (
-          <Link
-            href={event.title.toLowerCase().replace(" ", "-")}
-            className="grid shadow-out bg-material p-4"
-            key={event.id}
-          >
-            <img
-              className="rounded-t-sm"
-              src="https://placehold.co/200x200?text=Hello+World"
-            />
-            <p className="text-center">{event.title}</p>
-            <Stars value={event.rating} />
+            <div className="bg-header-background text-header-text text-[12px] absolute top-0 left-0 w-full pl-[2px] h-5 flex">
+              <span className="mr-auto">{event.title}</span>
+              <div className="flex gap-[1px] p-[2px]">
+                <button className="w-5 h-full bg-material shadow-out justify-center items-center flex">
+                  <img src="/help.svg" />
+                </button>
+                <button className="w-5 h-full bg-material shadow-out justify-center items-center flex">
+                  <img src="/close.svg" />
+                </button>
+              </div>
+            </div>
+            <div className="pt-5">
+              <img
+                className="rounded-t-sm w-full max-h-full object-cover size-40"
+                src={event.img}
+              />
+            </div>
+            <Stars className="py-[2px]" value={5} />
           </Link>
         ))}
       </div>

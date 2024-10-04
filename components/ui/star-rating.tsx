@@ -1,8 +1,8 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { Star } from "lucide-react"
 import { Dispatch, SetStateAction, useState } from "react"
+import { Icons } from './icons'
 
 export const StarRating = ({
   rating,
@@ -20,7 +20,7 @@ export const StarRating = ({
       {[...Array(5)].map((_, index) => {
         const starValue = index + 1
         return (
-          <Star
+          <Icons.Star
             key={index}
             className={cn(
               "size-8 cursor-pointer transition-colors duration-200 stroke-1 text-gray-300",

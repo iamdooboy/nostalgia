@@ -22,7 +22,7 @@ export const AddReviewDialog = ({
   setOpen
 }: Props) => {
   return (
-    <DialogContent className="w-full p-1">
+    <DialogContent className="w-full p-1" title={defaultText ? "Edit Review" : "Add Review"}>
       <form action={handleSubmit} className="space-y-4 p-4">
         <Label className="font-bold text-2xl">Leave a review</Label>
         <Textarea

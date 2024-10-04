@@ -7,7 +7,7 @@ export const Stars = ({
   className
 }: { value: number; className?: string }) => {
   return (
-    <div className={cn("flex gap-1 justify-center mb-4", className)}>
+    <div className={cn("flex gap-1 justify-center", className)}>
       {Array.from({ length: 5 }, (_, i) => {
         const fillPercentage = Math.max(0, Math.min(100, (value - i) * 100))
         return (
