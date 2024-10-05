@@ -9,7 +9,7 @@ export default async function Home() {
   //const _events = await db.select().from(events)
 
   return (
-    <div className="w-full max-w-2xl px-5 xl:px-0">
+    <div className="w-full max-w-2xl px-5 xl:px-0 py-4">
       <h1 className="text-center font-display text-4xl font-bold tracking-[-0.02em] drop-shadow-sm [text-wrap:balance] md:text-7xl md:leading-[5rem]">
         Feedback on Life
       </h1>

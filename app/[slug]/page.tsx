@@ -1,6 +1,5 @@
 import { EventRatings } from "@/components/event-ratings"
 import { ReviewSection } from "@/components/review-section"
-
 import db from "@/db"
 import { events } from "@/db/schemas/schema"
 import { Suspense } from "react"
@@ -14,8 +13,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const event = (await db.select().from(events)).find(
     (event) => event.title === title
   )
-
-  console.log(`/${params.slug}.png`)
 
   if (!event) return
   return (
@@ -38,18 +35,18 @@ export default async function Page({ params }: { params: { slug: string } }) {
             alt="Movie Poster"
             className="shadow-lg size-full h-auto rounded-sm"
           />
-          <div className="ml-4">
-            <div className="flex flex-col mb-3">
-              <h1 className="text-xl font-bold text-start">{event?.title}</h1>
-              <p>{event?.description}</p>
+          <div className="ml-4 flex flex-col justify-between">
+            <div className="flex flex-col gap-3">
+              <h1 className="text-3xl font-bold text-start">{event?.title}</h1>
+              <EventRatings rating={event?.rating} eventId={event?.id} />
             </div>
-            <EventRatings rating={event?.rating} eventId={event?.id} />
+            <div className="text-5xl font-bold text-center mb-5">
+              {event?.rating}
+            </div>
           </div>
         </div>
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <ReviewSection eventId={event?.id} />
-      </Suspense>
+      <ReviewSection eventId={event?.id} />
     </div>
   )
 }

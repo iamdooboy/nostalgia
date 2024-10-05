@@ -10,7 +10,7 @@ export const AddReviewButton = ({
 }: { user: User | null; setOpen: Dispatch<SetStateAction<boolean>> }) => {
   return (
     <DialogTrigger asChild>
-      <Button onClick={() => setOpen(true)}>Leave a review</Button>
+      <Button className='h-10 mt-4' onClick={() => setOpen(true)}>Leave a review</Button>
     </DialogTrigger>
   )
 }

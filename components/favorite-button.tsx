@@ -70,7 +70,7 @@ export const FavoriteButton = ({
     <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
       <DialogTrigger asChild>
         <form action={handleSubmit}>
-          <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
+          <button className="w-8 h-8 rounded-full flex justify-center items-center ">
             <Icons.HeartIcon
               className="w-4 h-4"
               style={{
@@ -80,7 +80,7 @@ export const FavoriteButton = ({
             <span className="ml-1 text-sm text-muted-foreground">
               {review.favoriteCount}
             </span>
-          </Button>
+          </button>
         </form>
       </DialogTrigger>
       {!user && <LoginModal description="Log in to favorite a review" />}

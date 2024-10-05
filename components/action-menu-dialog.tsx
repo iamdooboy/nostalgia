@@ -5,7 +5,6 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Ellipsis } from "lucide-react"
-import { Button } from "./ui/button"
 import { Icons } from "./ui/icons"
 
 export const ActionMenuDialog = ({
@@ -18,9 +17,9 @@ export const ActionMenuDialog = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
+        <button className="w-8 h-8 rounded-full flex justify-center items-center">
           <Ellipsis className="size-4" />
-        </Button>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onEdit}>

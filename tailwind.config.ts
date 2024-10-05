@@ -73,6 +73,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      outline: {
+        dotted: ['1px dotted #000', '1px'], // This adds a dotted outline variant
+      },
       cursor: {
         'wait': 'url(/wait.png), default',
       },
@@ -81,7 +84,8 @@ const config: Config = {
         out: "var(--shadow-out)",
         input: "var(--shadow-input)",
         active: "var(--shadow-active)",
-        inactive: "var(--shadow-inactive)"
+        inactive: "var(--shadow-inactive)",
+        button: "var(--shadow-button-active)"
       },
       colors: {
         background: "var(--background)",
