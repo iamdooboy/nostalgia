@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { StarIcon } from "lucide-react"
-import { Icons } from './ui/icons';
+import { Icons } from "./ui/icons"
 
 export const Stars = ({
   value,

@@ -1,5 +1,4 @@
 import { Dispatch } from "react"
-import { Button } from "./ui/button"
 import { DialogContent } from "./ui/dialog"
 import { Label } from "./ui/label"
 import { StarRating } from "./ui/star-rating"
@@ -22,7 +21,10 @@ export const AddReviewDialog = ({
   setOpen
 }: Props) => {
   return (
-    <DialogContent className="w-full" title={defaultText ? "Edit Review" : "Add Review"}>
+    <DialogContent
+      className="w-full"
+      title={defaultText ? "Edit Review" : "Add Review"}
+    >
       <form action={handleSubmit} className="space-y-4 p-4">
         <Label className="font-bold text-2xl">Leave a review</Label>
         <Textarea
@@ -36,7 +38,7 @@ export const AddReviewDialog = ({
           rating={rating}
           setRating={setRating}
         />
-        <div className='flex justify-center items-center'>
+        <div className="flex justify-center items-center">
           <button
             className="shadow-out w-20"
             type="submit"

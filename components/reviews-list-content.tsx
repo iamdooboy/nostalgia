@@ -3,6 +3,7 @@
 import { create, edit, remove } from "@/actions/reviews"
 import { Dialog } from "@/components/ui/dialog"
 import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useReview } from "@/context/review-context"
 import { Review as ReviewProps } from "@/lib/types"
 import { User } from "@supabase/supabase-js"
@@ -13,7 +14,6 @@ import { AddReviewDialog } from "./add-review-dialog"
 import { LoginModal } from "./login-modal"
 import { Review } from "./review"
 import { SortButtons } from "./sort-buttons"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const DEFAULT = {
   eventId: 0,

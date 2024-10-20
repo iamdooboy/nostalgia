@@ -74,10 +74,10 @@ const config: Config = {
   theme: {
     extend: {
       outline: {
-        dotted: ['1px dotted #000', '1px'], // This adds a dotted outline variant
+        dotted: ["1px dotted #000", "1px"] // This adds a dotted outline variant
       },
       cursor: {
-        'wait': 'url(/wait.png), default',
+        wait: "url(/wait.png), default"
       },
       boxShadow: {
         in: "var(--shadow-in)",

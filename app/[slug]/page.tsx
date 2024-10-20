@@ -2,7 +2,6 @@ import { EventRatings } from "@/components/event-ratings"
 import { ReviewSection } from "@/components/review-section"
 import db from "@/db"
 import { events } from "@/db/schemas/schema"
-import { Suspense } from "react"
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const arr = params.slug.split("-")
@@ -29,20 +28,19 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </button>
           </div>
         </div>
-        <div className="p-8 bg-input-background shadow-in w-full h-full flex">
+        <div className="p-8 bg-input-background shadow-in w-full h-full">
           <img
             src={`/${params.slug}.webp`}
             alt="Movie Poster"
-            className="shadow-lg size-full h-auto rounded-sm"
+            className="shadow-lg size-full"
           />
-          <div className="ml-4 flex flex-col justify-between">
-            <div className="flex flex-col gap-3">
+
+          <div className="flex justify-between items-center mt-1">
+            <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold text-start">{event?.title}</h1>
               <EventRatings rating={event?.rating} eventId={event?.id} />
             </div>
-            <div className="text-5xl font-bold text-center mb-5">
-              {event?.rating}
-            </div>
+            <h1 className="text-5xl font-bold">{event?.rating}</h1>
           </div>
         </div>
       </div>

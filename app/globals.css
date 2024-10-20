@@ -87,11 +87,20 @@
     --shadow-input: inset -1px -1px 0 0 #c3c7cb, inset 1px 1px 0 0 #000000, .5px
       .5px 0 .5px #ffffff;
     --shadow-active:
-      inset 0 1px 0 0 var(--border-lightest), -2px 1px 0 -1px var(--material), -.5px 3px 0 .5px var(--material), -2px 2px 0 0 var(--border-lightest), -2px 0 0 -1px
-      var(--border-lightest), 1px 2px 0 0 var(--border-dark), 2px 0 0 -1px var(--border-darkest), 2px 2px 0 0 var(--border-darkest);
+      inset 0 1px 0 0 var(--border-lightest), -2px 1px 0 -1px var(--material), -.5px 3px 0 .5px var(
+        --material
+      ), -2px 2px 0 0 var(--border-lightest), -2px 0 0 -1px
+      var(--border-lightest), 1px 2px 0 0 var(--border-dark), 2px 0 0 -1px var(
+        --border-darkest
+      ), 2px 2px 0 0 var(--border-darkest);
     --shadow-inactive:
-      inset 0 1px 0 0 var(--border-lightest),-2px 1px 0 -1px var(--material),-3px 1px 0 -1px var(--border-lightest),-2px 0 0 -1px var(--border-lightest),2px 1px 0 -1px var(--border-dark),2px 0 0 -1px var(--border-darkest),3px 1px 0 -1px var(--border-darkest);
-    --shadow-button-active: inset 0 0 0 1px var(--border-dark),0 0 0 1px var(--border-darkest)
+      inset 0 1px 0 0 var(--border-lightest), -2px 1px 0 -1px var(--material), -3px 1px 0 -1px var(
+        --border-lightest
+      ), -2px 0 0 -1px var(--border-lightest), 2px 1px 0 -1px var(--border-dark), 2px 0 0 -1px var(
+        --border-darkest
+      ), 3px 1px 0 -1px var(--border-darkest);
+    --shadow-button-active: inset 0 0 0 1px var(--border-dark), 0 0 0 1px
+      var(--border-darkest);
   }
 }
 @layer base {

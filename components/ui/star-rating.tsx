@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { Dispatch, SetStateAction, useState } from "react"
-import { Icons } from './icons'
+import { Icons } from "./icons"
 
 export const StarRating = ({
   rating,
